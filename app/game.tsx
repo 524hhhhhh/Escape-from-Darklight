@@ -1,12 +1,21 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useGameStore } from "@/store/use-game-store";
-import { router } from "expo-router";
-import Button from "@/components/common/buttons/button";
-import AppModal from "@/components/common/modals/modal";
+import Button from "@/components/buttons/button";
+import AppModal from "@/components/modals/modal";
+import GameCanvas from "@/game/ui/canvas/game-canvas";
+import { COLORS } from "@/constants/theme";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 
-export default function GamePage() {
+export default function GameScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   const phase = useGameStore((state) => state.phase);
+  const runId = useGameStore((state) => state.runId);
   const setGameState = useGameStore((state) => state.setGameState);
+  const restart = useGameStore((state) => state.restart);
 
   const visible = phase === "cleared" || phase === "gameover";
   const title = phase === "cleared" ? "GAME CLEAR" : "GAME OVER";
@@ -14,11 +23,7 @@ export default function GamePage() {
 
   return (
     <View style={styles.root}>
-      {phase === "playing" ? (
-        <Text>게임 진행 중...</Text>
-      ) : (
-        <Text>게임이 아직 시작되지 않았습니다.</Text>
-      )}
+      <GameCanvas key={runId} isRunning={phase === "playing"} />
 
       <Button
         style={styles.button}
@@ -26,7 +31,11 @@ export default function GamePage() {
         onPress={() => setGameState("cleared")}
       />
 
-      <Button title="게임 오버 처리" onPress={() => setGameState("gameover")} />
+      <Button
+        style={styles.button}
+        title="게임 오버 처리"
+        onPress={() => setGameState("gameover")}
+      />
 
       <AppModal
         visible={visible}
@@ -34,13 +43,13 @@ export default function GamePage() {
         subTitle={subTitle}
         primaryAction={{
           title: "다시하기",
-          onPress: () => setGameState("playing"),
+          onPress: restart,
         }}
         secondaryAction={{
           title: "메인으로 돌아가기",
           onPress: () => {
             setGameState("start");
-            router.replace("/");
+            navigation.replace("Home");
           },
         }}
       />
@@ -51,10 +60,10 @@ export default function GamePage() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundColor: COLORS.BACKGROUND,
   },
   button: {
+    alignSelf: "center",
     marginBottom: 10,
   },
 });

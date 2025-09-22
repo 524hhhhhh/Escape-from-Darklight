@@ -2,7 +2,9 @@ type GamePhase = "start" | "playing" | "cleared" | "gameover";
 
 type GameState = {
   phase: GamePhase;
+  runId: number;
   setGameState: (phase: GamePhase) => void;
+  restart: () => void;
 };
 
-export { GamePhase, GameState };
+export type { GamePhase, GameState };
