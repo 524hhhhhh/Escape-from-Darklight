@@ -8,6 +8,8 @@ type WorldSystem = (
 type WorldLoopHandle = {
   start: () => void;
   stop: () => void;
+  resetWorld: (newWorld: WorldState) => void;
+  getWorld: () => WorldState;
 };
 
 export type { WorldSystem, WorldLoopHandle };
