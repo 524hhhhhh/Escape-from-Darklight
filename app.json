@@ -14,7 +14,8 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.escape"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,11 +23,11 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.yourname.escape"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "plugins": ["expo-router"]
+    }
   }
 }
