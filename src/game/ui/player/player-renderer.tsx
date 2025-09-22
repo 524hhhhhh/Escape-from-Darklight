@@ -2,7 +2,7 @@ import React from "react";
 import type { FacingDirection } from "@/types/sprite";
 import PlayerSprite from "./player-sprite";
 import { ScreenPosition, WorldPosition } from "@/types/position";
-import { Viewport } from "@/types/world";
+import { Viewport } from "@/types/world-state";
 
 type Props = {
   position: WorldPosition;

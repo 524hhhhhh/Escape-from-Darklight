@@ -1,6 +1,6 @@
 import { WorldPosition } from "@/types/position";
 import { FacingDirection } from "@/types/sprite";
-import { Player } from "@/types/world";
+import { Player } from "@/types/world-state";
 
 type CreatePlayerArgs = WorldPosition & { facing?: FacingDirection };
 
