@@ -1,7 +1,7 @@
 import React from "react";
 import { Modal, View, Text } from "react-native";
-import Button from "@/components/common/buttons/button";
-import IconButton from "@/components/common/buttons/icon-button";
+import Button from "@/components/buttons/button";
+import IconButton from "@/components/buttons/icon-button";
 import { modalStyles } from "./modal-styles";
 
 type ModalProps = {

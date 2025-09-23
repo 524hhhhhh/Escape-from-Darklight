@@ -1,10 +1,15 @@
 import { COLORS } from "@/constants/theme";
-import { router } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { RootStackParamList } from "App";
 import { Text, Pressable, StyleSheet, View } from "react-native";
 
 export default function HomeScreen() {
+  const navigation =
+    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+
   return (
-    <Pressable style={styles.root} onPress={() => router.replace("/stage")}>
+    <Pressable style={styles.root} onPress={() => navigation.replace("Stage")}>
       <View style={styles.logoBox}>
         <Text style={styles.logoText}>로고</Text>
       </View>
