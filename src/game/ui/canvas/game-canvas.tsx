@@ -1,34 +1,52 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import WorldRenderer from "@/game/world-renderer";
 import { PhysicsSystem } from "@/game/systems/physics-system";
 import { CameraSystem } from "@/game/systems/camera-system";
+import { WorldClampSystem } from "@/game/systems/world-clamp-system";
 import Joystick from "@/game/ui/controls/joystick";
 import type { WorldLoopHandle, WorldSystem } from "@/types/world-engine";
+import sampleMap from "@assets/map/map.json";
+import TileLayer from "@/game/ui/world/tile-layer";
 import { createWorldState } from "@/game/ui/world/create-world-state";
 
 type Props = { isRunning?: boolean };
-const systems: WorldSystem[] = [PhysicsSystem, CameraSystem];
+const systems: WorldSystem[] = [PhysicsSystem, WorldClampSystem, CameraSystem];
 
 export default function GameCanvas({ isRunning = false }: Props) {
   const insets = useSafeAreaInsets();
-  const joyStyle = { left: 20 + insets.left, bottom: insets.top - 40 };
+  const joyStyle = { left: 20 + insets.left, bottom: insets.bottom + 20 };
 
   const engineRef = useRef<WorldLoopHandle | null>(null);
-  const worldRef = useRef(createWorldState());
+  const initialWorld = useMemo(
+    () => createWorldState({ mapJson: sampleMap }),
+    [],
+  );
+  const worldRef = useRef(initialWorld);
+
+  const layoutReadyRef = useRef(false);
 
   useEffect(() => {
-    if (isRunning) {
-      const newWorld = createWorldState();
-      worldRef.current = newWorld;
+    const engine = engineRef.current;
+    if (!engine) {
+      return;
+    }
 
-      engineRef.current?.resetWorld(newWorld);
-      engineRef.current?.start();
+    if (isRunning) {
+      engine.start();
     } else {
-      engineRef.current?.stop();
+      engine.stop();
     }
   }, [isRunning]);
+
+  const handleLayout = (e: LayoutChangeEvent) => {
+    const { width, height } = e.nativeEvent.layout;
+    const view = worldRef.current.view;
+    view.width = width;
+    view.height = height;
+    layoutReadyRef.current = true;
+  };
 
   return (
     <View style={styles.root}>
@@ -38,11 +56,10 @@ export default function GameCanvas({ isRunning = false }: Props) {
         style={styles.canvas}
         worldMap={worldRef.current}
         systems={systems}
-        onLayout={(e: LayoutChangeEvent) => {
-          const { width, height } = e.nativeEvent.layout;
-          worldRef.current.view.width = width;
-          worldRef.current.view.height = height;
-        }}
+        onLayout={handleLayout}
+        renderOverlay={(world) =>
+          world.map ? <TileLayer map={world.map} view={world.view} /> : null
+        }
       />
       <View style={styles.hud}>
         <Joystick
@@ -61,7 +78,7 @@ export default function GameCanvas({ isRunning = false }: Props) {
 
 const styles = StyleSheet.create({
   root: { flex: 1, width: "100%", height: "100%", position: "relative" },
-  canvas: { flex: 1 },
+  canvas: { flex: 1, position: "relative" },
   hud: { ...StyleSheet.absoluteFillObject, pointerEvents: "box-none" },
   joystick: { position: "absolute" },
 });
