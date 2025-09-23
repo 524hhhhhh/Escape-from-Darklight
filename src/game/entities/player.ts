@@ -1,14 +1,14 @@
-import { WorldPosition } from "@/types/position";
-import { FacingDirection } from "@/types/sprite";
-import { Player } from "@/types/world-state";
+import type { WorldPosition } from "@/types/position";
+import type { FacingDirection } from "@/types/sprite";
+import type { Player } from "@/types/world-state";
 
 type CreatePlayerArgs = WorldPosition & { facing?: FacingDirection };
 
 export const createPlayer = ({
-  x,
-  y,
+  worldX,
+  worldY,
   facing = "N",
 }: CreatePlayerArgs): Player => ({
-  position: { x, y },
+  position: { worldX, worldY },
   facing,
 });

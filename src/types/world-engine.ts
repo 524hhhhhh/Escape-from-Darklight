@@ -1,9 +1,8 @@
 import { WorldState } from "@/types/world-state";
 
-type WorldSystem = (
-  worldState: WorldState,
-  frameInfo: { time: { delta: number; now: number } },
-) => WorldState;
+type FrameInfo = { time: { delta: number; now: number } };
+
+type WorldSystem = (worldState: WorldState, frameInfo: FrameInfo) => WorldState;
 
 type WorldLoopHandle = {
   start: () => void;
@@ -12,4 +11,4 @@ type WorldLoopHandle = {
   getWorld: () => WorldState;
 };
 
-export type { WorldSystem, WorldLoopHandle };
+export type { FrameInfo, WorldSystem, WorldLoopHandle };
