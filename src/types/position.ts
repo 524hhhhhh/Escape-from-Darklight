@@ -1,11 +1,6 @@
-type WorldPosition = {
-  x: number;
-  y: number;
-};
+type BaseSize = { width: number; height: number };
+type TilePosition = { tileX: number; tileY: number };
+type WorldPosition = { worldX: number; worldY: number };
+type CenterPosition = { centerX: number; centerY: number };
 
-type ScreenPosition = {
-  x: number;
-  y: number;
-};
-
-export type { WorldPosition, ScreenPosition };
+export type { BaseSize, TilePosition, WorldPosition, CenterPosition };
