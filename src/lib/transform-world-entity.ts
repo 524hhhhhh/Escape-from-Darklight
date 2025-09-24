@@ -1,4 +1,4 @@
-import { tileToWorld, tileCenterToWorld } from "../coordinate";
+import { tileToWorld, tileCenterToWorld } from "@/utils/coordinate";
 
 type TileEntity = { tileX: number; tileY: number; id?: string };
 
@@ -7,12 +7,12 @@ export function transformWorldEntity<T extends TileEntity>(
   tile: number,
 ) {
   const { x, y } = tileToWorld(src.tileX, src.tileY, tile);
-  const { cx, cy } = tileCenterToWorld(src.tileX, src.tileY, tile);
+  const { centerX, centerY } = tileCenterToWorld(src.tileX, src.tileY, tile);
   return {
     ...src,
     worldX: x,
     worldY: y,
-    centerX: cx,
-    centerY: cy,
+    centerX: centerX,
+    centerY: centerY,
   };
 }
