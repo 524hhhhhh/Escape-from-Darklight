@@ -10,10 +10,21 @@ type Props = {
   isRunning?: boolean;
   style?: StyleProp<ViewStyle>;
   onLayout?: (e: LayoutChangeEvent) => void;
+  renderOverlay?: (world: WorldState) => React.ReactNode;
 };
 
 const WorldRenderer = forwardRef<WorldLoopHandle, Props>(
-  ({ systems = [], worldMap, isRunning = false, style, onLayout }, ref) => {
+  (
+    {
+      systems = [],
+      worldMap,
+      isRunning = false,
+      style,
+      onLayout,
+      renderOverlay,
+    },
+    ref,
+  ) => {
     const loop = useGameLoop(worldMap, systems);
 
     useImperativeHandle(ref, () => ({
@@ -39,13 +50,14 @@ const WorldRenderer = forwardRef<WorldLoopHandle, Props>(
         }
         const Renderer = entity.renderer;
 
-        return <Renderer key={id} {...entity} />;
+        return <Renderer key={id} {...entity.props} />;
       })
       .filter(Boolean);
 
     return (
       <View style={style} onLayout={onLayout}>
         {rendered}
+        {renderOverlay?.(world)}
       </View>
     );
   },

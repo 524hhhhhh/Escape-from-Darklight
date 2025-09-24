@@ -1,28 +1,33 @@
 import React from "react";
 import type { FacingDirection } from "@/types/sprite";
 import PlayerSprite from "./player-sprite";
-import { ScreenPosition, WorldPosition } from "@/types/position";
-import { Viewport } from "@/types/world-state";
+import type { Viewport } from "@/types/world-state";
+import type { WorldPosition } from "@/types/position";
 
-type Props = {
+type PlayerRenderProps = {
   position: WorldPosition;
   facing: FacingDirection;
   view: Viewport;
 };
 
-export default function PlayerRenderer({ position, facing, view }: Props) {
-  const screen: ScreenPosition = {
-    x: (position.x - view.offsetX) * view.zoom,
-    y: (position.y - view.offsetY) * view.zoom,
-  };
+export default function PlayerRenderer({
+  position,
+  facing,
+  view,
+}: PlayerRenderProps) {
+  const { worldX, worldY } = position;
+  const { offsetX, offsetY, zoom } = view;
+
+  const screenX = (worldX - offsetX) * zoom;
+  const screenY = (worldY - offsetY) * zoom;
 
   return (
     <PlayerSprite
-      x={screen.x}
-      y={screen.y}
+      x={screenX}
+      y={screenY}
       direction={facing}
       frame={0}
-      scale={view.zoom}
+      scale={zoom}
     />
   );
 }

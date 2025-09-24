@@ -3,7 +3,7 @@ import { useState, useCallback, useRef } from "react";
 import { PanResponder, GestureResponderEvent } from "react-native";
 import { normalize, clamp } from "@/utils/math";
 import JOYSTICK from "@/constants/joystick";
-import { applyDeadzone, vectorToAngle } from "@/utils/input";
+import { applyDeadzone, vectorToAngle } from "@/utils/joystick-input";
 
 type Props = {
   onChange?: (v: StickVector) => void;

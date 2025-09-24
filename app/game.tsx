@@ -25,17 +25,19 @@ export default function GameScreen() {
     <View style={styles.root}>
       <GameCanvas key={runId} isRunning={phase === "playing"} />
 
-      <Button
-        style={styles.button}
-        title="게임 클리어 처리"
-        onPress={() => setGameState("cleared")}
-      />
+      <View style={styles.view}>
+        <Button
+          style={styles.button}
+          title="게임 클리어 처리"
+          onPress={() => setGameState("cleared")}
+        />
 
-      <Button
-        style={styles.button}
-        title="게임 오버 처리"
-        onPress={() => setGameState("gameover")}
-      />
+        <Button
+          style={styles.button}
+          title="게임 오버 처리"
+          onPress={() => setGameState("gameover")}
+        />
+      </View>
 
       <AppModal
         visible={visible}
@@ -58,12 +60,14 @@ export default function GameScreen() {
 }
 
 const styles = StyleSheet.create({
-  root: {
-    flex: 1,
-    backgroundColor: COLORS.BACKGROUND,
+  root: { flex: 1, backgroundColor: COLORS.BACKGROUND.GAME },
+  view: {
+    position: "absolute",
+    alignSelf: "center",
+    bottom: 30,
+    right: 20,
   },
   button: {
-    alignSelf: "center",
     marginBottom: 10,
   },
 });

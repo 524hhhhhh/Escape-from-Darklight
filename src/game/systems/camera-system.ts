@@ -1,8 +1,12 @@
 import { WorldSystem } from "@/types/world-engine";
+import { deltaSeconds } from "@/utils/math";
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
-export const CameraSystem: WorldSystem = (world) => {
+const SMOOTH = 0.2;
+const DEADZONE = 0.5;
+
+export const CameraSystem: WorldSystem = (world, frameInfo) => {
   const { player, view, world: bounds } = world;
   if (!player || !view) {
     return world;
@@ -19,19 +23,33 @@ export const CameraSystem: WorldSystem = (world) => {
   const halfW = vw / (2 * zoom);
   const halfH = vh / (2 * zoom);
 
-  let targetOffsetX = player.position.x - halfW;
-  let targetOffsetY = player.position.y - halfH;
+  let targetOffsetX = player.position.worldX - halfW;
+  let targetOffsetY = player.position.worldY - halfH;
 
   if (bounds) {
-    const maxOffsetX = Math.max(0, (bounds.width ?? 0) - vw / zoom);
-    const maxOffsetY = Math.max(0, (bounds.height ?? 0) - vh / zoom);
+    const maxOffsetX = Math.max(0, bounds.width - vw / zoom);
+    const maxOffsetY = Math.max(0, bounds.height - vh / zoom);
     targetOffsetX = Math.max(0, Math.min(targetOffsetX, maxOffsetX));
     targetOffsetY = Math.max(0, Math.min(targetOffsetY, maxOffsetY));
   }
 
-  const SMOOTH = 0.2;
-  view.offsetX = lerp(view.offsetX ?? 0, targetOffsetX, SMOOTH);
-  view.offsetY = lerp(view.offsetY ?? 0, targetOffsetY, SMOOTH);
+  const dt = deltaSeconds(frameInfo);
+  const smooth = Math.min(Math.max(SMOOTH * (dt / (1 / 60)), 0), 1);
+
+  const dx = targetOffsetX - (view.offsetX ?? 0);
+  const dy = targetOffsetY - (view.offsetY ?? 0);
+
+  if (Math.abs(dx) <= DEADZONE) {
+    view.offsetX = targetOffsetX;
+  } else {
+    view.offsetX = lerp(view.offsetX ?? 0, targetOffsetX, smooth);
+  }
+
+  if (Math.abs(dy) <= DEADZONE) {
+    view.offsetY = targetOffsetY;
+  } else {
+    view.offsetY = lerp(view.offsetY ?? 0, targetOffsetY, smooth);
+  }
 
   return world;
 };

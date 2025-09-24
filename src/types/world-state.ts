@@ -1,5 +1,6 @@
 import type { FacingDirection } from "@/types/sprite";
-import { WorldPosition } from "@/types/position";
+import type { TileGridLayer } from "@/types/map-transform";
+import type { BaseSize, WorldPosition } from "@/types/position";
 
 type Viewport = {
   offsetX: number;
@@ -23,11 +24,13 @@ type InputVector = {
 type Player = {
   position: WorldPosition;
   facing: FacingDirection;
+  size?: BaseSize;
 };
 
-type Renderable<TProps = unknown> = {
-  renderer?: React.ComponentType<TProps>;
-} & TProps;
+type Renderable<TProps> = {
+  renderer: React.ComponentType<TProps>;
+  props: TProps;
+};
 
 type PlayerSpriteProps = { playerRef: Player; view: Viewport };
 
@@ -41,6 +44,15 @@ type WorldState = {
   input: InputVector;
   player: Player;
   entities: Entities;
+  map?: TileGridLayer;
+  dt?: number;
 };
 
-export type { Viewport, World, InputVector, Player, WorldState };
+export type {
+  Viewport,
+  World,
+  InputVector,
+  Player,
+  WorldState,
+  PlayerSpriteProps,
+};
