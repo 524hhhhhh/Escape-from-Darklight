@@ -5,9 +5,11 @@ import type {
   CenterPosition,
   WorldPosition,
 } from "./position";
+import type { SolidRegistry } from "@/types/registry";
 
 type TransformMeta = BaseSize & {
-  tileSizeRender: number;
+  tileRenderSize: number;
+  tileCollisionSize: number;
   version: string;
 };
 
@@ -24,7 +26,7 @@ type TransformMap = {
   tileSize: number;
   meta: TransformMeta;
 
-  solids: [];
+  solids: SolidRegistry;
   exits: TransformExit[];
   spawn: TransformSpawn;
 
@@ -32,12 +34,4 @@ type TransformMap = {
   hazards?: unknown[];
 };
 
-type TileGridLayer = Pick<TransformMap, "grid" | "tileSize" | "meta">;
-
-export type {
-  TransformMeta,
-  TransformSpawn,
-  TransformExit,
-  TransformMap,
-  TileGridLayer,
-};
+export type { TransformMeta, TransformSpawn, TransformExit, TransformMap };
