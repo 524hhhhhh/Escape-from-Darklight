@@ -3,8 +3,6 @@
     "version": "1.0",
     "width": 30,
     "height": 15,
-    "tileSizeRender": 50,
-    "tileSizeCollision": 50,
     "generator": { "name": "manual", "seed": null, "params": {} }
   },
   "grid": [

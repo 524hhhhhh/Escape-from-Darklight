@@ -17,14 +17,14 @@ export const MapJsonSchema = z.object({
     version: z.string(),
     width: z.number(),
     height: z.number(),
-    tileSizeRender: z.number(),
-    tileSizeCollision: z.number(),
+
     generator: z.object({
       name: z.string(),
       seed: z.number().nullable(),
       params: z.record(z.unknown()),
     }),
   }),
+
   grid: TileGridSchema,
   spawn: z.object({ tileX: z.number(), tileY: z.number() }),
   exits: z.array(
