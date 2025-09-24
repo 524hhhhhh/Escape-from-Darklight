@@ -10,15 +10,15 @@ function tileCenterToWorld(tileX: number, tileY: number, tileSize: number) {
 }
 
 function isWall(tileCode: TileCode | null) {
-  return tileCode === TILE.Wall;
+  return tileCode === TILE.WALL;
 }
 
 function isExit(tileCode: TileCode | null) {
-  return tileCode === TILE.Exit;
+  return tileCode === TILE.EXIT;
 }
 
 function isWalkable(tileCode: TileCode | null) {
-  return tileCode !== TILE.Wall && tileCode !== null;
+  return tileCode !== TILE.WALL && tileCode !== null;
 }
 
 export { tileToWorld, tileCenterToWorld, isWall, isExit, isWalkable };

@@ -71,16 +71,16 @@ export function useGameLoop(
     cancelRaf();
   }, [cancelRaf]);
 
-  const reset = useCallback((newWorld: WorldState) => {
+  const resetWorld = useCallback((newWorld: WorldState) => {
     worldStateRef.current = newWorld;
     lastFrameTime.current = null;
     setTick((tick) => (tick + 1) % INT31);
   }, []);
 
   return {
-    getEntityMap: () => worldStateRef.current,
     start,
     stop,
-    reset,
+    resetWorld,
+    getWorld: () => worldStateRef.current,
   };
 }

@@ -14,9 +14,9 @@ type Props = {
 export default function TileLayer({ map, view }: Props) {
   const { grid, tileSize } = map;
   const TILE_COLORS: Record<TileCode, string> = {
-    [TILE.Road]: COLORS.MAP.ROAD,
-    [TILE.Wall]: COLORS.MAP.WALL,
-    [TILE.Exit]: COLORS.MAP.EXIT,
+    [TILE.ROAD]: COLORS.MAP.ROAD,
+    [TILE.WALL]: COLORS.MAP.WALL,
+    [TILE.EXIT]: COLORS.MAP.EXIT,
   };
 
   const zoom = view.zoom ?? 1;
@@ -36,7 +36,7 @@ export default function TileLayer({ map, view }: Props) {
     const row = grid[ty];
     for (let tx = left; tx <= right; tx++) {
       const value = row[tx];
-      if (value === TILE.Road) continue;
+      if (value === TILE.ROAD) continue;
 
       const screenX = tx * tileSize - view.offsetX;
       const screenY = ty * tileSize - view.offsetY;

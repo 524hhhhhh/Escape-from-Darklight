@@ -2,9 +2,9 @@ import { z } from "zod";
 import { TILE } from "@/constants/map";
 
 export const TileCodeSchema = z.union([
-  z.literal(TILE.Road),
-  z.literal(TILE.Wall),
-  z.literal(TILE.Exit),
+  z.literal(TILE.ROAD),
+  z.literal(TILE.WALL),
+  z.literal(TILE.EXIT),
 ]);
 
 export const TileGridSchema = z.array(z.array(TileCodeSchema));

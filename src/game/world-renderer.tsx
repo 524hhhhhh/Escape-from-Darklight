@@ -30,8 +30,8 @@ const WorldRenderer = forwardRef<WorldLoopHandle, Props>(
     useImperativeHandle(ref, () => ({
       start: loop.start,
       stop: loop.stop,
-      resetWorld: loop.reset,
-      getWorld: loop.getEntityMap,
+      resetWorld: loop.resetWorld,
+      getWorld: loop.getWorld,
     }));
 
     useEffect(() => {
@@ -42,7 +42,7 @@ const WorldRenderer = forwardRef<WorldLoopHandle, Props>(
       }
     }, [isRunning, loop]);
 
-    const world = loop.getEntityMap();
+    const world = loop.getWorld();
     const rendered = Object.entries(world.entities)
       .map(([id, entity]) => {
         if (!entity.renderer) {
