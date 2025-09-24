@@ -1,17 +1,17 @@
 function tileToWorld(tileX: number, tileY: number, tileSize: number) {
-  return { x: tileX * tileSize, y: tileY * tileSize };
+  return { worldX: tileX * tileSize, worldY: tileY * tileSize };
 }
 
 function worldToTile(
-  x: number,
-  y: number,
+  worldX: number,
+  worldY: number,
   tileSize: number,
   width: number,
   height: number,
 ) {
   return {
-    tileX: Math.max(0, Math.min(width - 1, Math.floor(x / tileSize))),
-    tileY: Math.max(0, Math.min(height - 1, Math.floor(y / tileSize))),
+    tileX: Math.max(0, Math.min(width - 1, Math.floor(worldX / tileSize))),
+    tileY: Math.max(0, Math.min(height - 1, Math.floor(worldY / tileSize))),
   };
 }
 
