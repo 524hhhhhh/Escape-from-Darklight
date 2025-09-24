@@ -9,7 +9,7 @@ const DEADZONE = 0.5;
 export const CameraSystem: WorldSystem = (world, frameInfo) => {
   const { player, view, world: bounds } = world;
   if (!player || !view) {
-    return world;
+    return;
   }
 
   const zoom = view.zoom ?? 1;
@@ -17,7 +17,7 @@ export const CameraSystem: WorldSystem = (world, frameInfo) => {
   const vh = view.height ?? 0;
 
   if (vw === 0 || vh === 0) {
-    return world;
+    return;
   }
 
   const halfW = vw / (2 * zoom);
@@ -50,6 +50,4 @@ export const CameraSystem: WorldSystem = (world, frameInfo) => {
   } else {
     view.offsetY = lerp(view.offsetY ?? 0, targetOffsetY, smooth);
   }
-
-  return world;
 };

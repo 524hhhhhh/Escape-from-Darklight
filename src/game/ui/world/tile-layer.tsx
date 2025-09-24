@@ -1,13 +1,13 @@
 import React from "react";
 import { TILE } from "@/constants/map";
 import type { Viewport } from "@/types/world-state";
-import type { TileGridLayer } from "@/types/map-transform";
 import { TileCode } from "@/lib/validator/map-schema";
 import { COLORS } from "@/constants/theme";
 import { renderCellBox } from "./render-cell-box";
+import { TransformMap } from "@/types/map-transform";
 
 type Props = {
-  map: TileGridLayer;
+  map: TransformMap;
   view: Viewport;
 };
 
