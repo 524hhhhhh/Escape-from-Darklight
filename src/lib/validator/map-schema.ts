@@ -27,13 +27,6 @@ export const MapJsonSchema = z.object({
 
   grid: TileGridSchema,
   spawn: z.object({ tileX: z.number(), tileY: z.number() }),
-  exits: z.array(
-    z.object({
-      tileX: z.number(),
-      tileY: z.number(),
-      id: z.string().optional(),
-    }),
-  ),
   objects: z.array(z.unknown()),
 });
 

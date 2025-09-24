@@ -68,6 +68,5 @@
     ]
   ],
   "spawn": { "tileX": 1, "tileY": 1 },
-  "exits": [{ "id": "exit-1", "tileX": 10, "tileY": 10 }],
   "objects": []
 }
