@@ -7,7 +7,7 @@ import type {
   World,
   WorldState,
 } from "@/types/world-state";
-import type { FacingDirection } from "@/types/sprite";
+import type { FacingDirection } from "@/types/sprite-animation";
 import { loadMap } from "@/game/map/load-map";
 import type { WorldPosition } from "@/types/position";
 import {
@@ -48,6 +48,8 @@ export function createWorldState({
             position={playerRef.position}
             facing={playerRef.facing}
             view={viewport}
+            state={playerRef.animation.state}
+            frame={playerRef.animation.frameIndex}
           />
         ),
         props: { playerRef: player, view },

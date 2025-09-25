@@ -16,8 +16,8 @@ export const PhysicsSystem: WorldSystem = (world, frameInfo) => {
     return;
   }
 
-  const velocityX = input.x * PLAYER.MOVE_SPEED * power;
-  const velocityY = input.y * PLAYER.MOVE_SPEED * power;
+  const velocityX = input.x * PLAYER.SPEED * power;
+  const velocityY = input.y * PLAYER.SPEED * power;
 
   const { worldX: currentX, worldY: currentY } = player.position;
 
@@ -41,7 +41,7 @@ export const PhysicsSystem: WorldSystem = (world, frameInfo) => {
   player.position.worldY = nextY;
 
   const speed = Math.hypot(velocityX, velocityY);
-  if (speed > PLAYER.MOVE_SPEED * PLAYER.MIN_FACING_SPEED) {
+  if (speed > PLAYER.SPEED * PLAYER.MIN_FACING_SPEED) {
     player.facing = vectorToDirection(velocityX, velocityY);
   }
 };

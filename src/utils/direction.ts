@@ -1,4 +1,4 @@
-import { FacingDirection } from "@/types/sprite";
+import { FacingDirection } from "@/types/sprite-animation";
 
 export const vectorToDirection = (dx: number, dy: number): FacingDirection => {
   const degree = (Math.atan2(dy, dx) * 180) / Math.PI;

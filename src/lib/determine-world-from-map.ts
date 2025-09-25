@@ -1,6 +1,6 @@
 import { World } from "@/types/world-state";
 import { loadMap } from "../game/map/load-map";
-import { FacingDirection } from "@/types/sprite";
+import { FacingDirection } from "@/types/sprite-animation";
 import { WorldPosition } from "@/types/position";
 
 function determineWorldSize(
