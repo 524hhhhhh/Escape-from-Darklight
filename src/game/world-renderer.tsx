@@ -56,8 +56,8 @@ const WorldRenderer = forwardRef<WorldLoopHandle, Props>(
 
     return (
       <View style={style} onLayout={onLayout}>
-        {rendered}
         {renderOverlay?.(world)}
+        {rendered}
       </View>
     );
   },
