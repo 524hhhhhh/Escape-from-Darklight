@@ -1,17 +1,21 @@
-import type { FacingDirection } from "@/types/sprite";
+import type { FacingDirection } from "@/types/sprite-animation";
 import { TILE_SIZE } from "./map";
 
 const PLAYER = {
-  MOVE_SPEED: 180,
+  SPEED: 180,
   MIN_FACING_SPEED: 0.05,
-  COLLIDER_W: Math.round(0.5 * TILE_SIZE.COLLISION),
-  COLLIDER_H: Math.round(0.8 * TILE_SIZE.COLLISION),
+  COLLIDER_W: Math.round(0.3 * TILE_SIZE.COLLISION),
+  COLLIDER_H: Math.round(0.5 * TILE_SIZE.COLLISION),
+  RENDER_SCALE: 3,
+  ANCHOR_Y: 0.1,
 };
 
 const SPRITE = {
-  FRAME_SIZE: 64,
-  ROWS: 1,
-  FRAMES_PER_DIRECTION: 1,
+  FRAME_SIZE: 24,
+  CLIPS: {
+    IDLE: { FRAMES: 4, SOURCE: require("@assets/pink_idle.png") },
+    RUN: { FRAMES: 4, SOURCE: require("@assets/pink_run.png") },
+  } as const,
   DIRECTIONS: [
     "S",
     "SE",
@@ -22,16 +26,16 @@ const SPRITE = {
     "W",
     "SW",
   ] as const satisfies FacingDirection[],
-  DIRECTION_TO_COLUMN: {
-    S: 0,
-    SE: 1,
-    E: 2,
-    NE: 3,
-    N: 4,
-    NW: 5,
-    W: 6,
-    SW: 7,
-  } as const satisfies Record<FacingDirection, number>,
 };
 
-export { PLAYER, SPRITE };
+const FRAME_RATE = {
+  IDLE: 4,
+  RUN: 10,
+};
+
+const INPUT_DEADZONE = 0.08;
+
+const isRightFacing = (direction: FacingDirection) =>
+  direction === "E" || direction === "NE" || direction === "SE";
+
+export { PLAYER, SPRITE, isRightFacing, FRAME_RATE, INPUT_DEADZONE };

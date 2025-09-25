@@ -1,4 +1,7 @@
-import type { FacingDirection } from "@/types/sprite";
+import type {
+  FacingDirection,
+  PlayerAnimation,
+} from "@/types/sprite-animation";
 import type { BaseSize, WorldPosition } from "@/types/position";
 import { TransformMap } from "./map-transform";
 
@@ -25,6 +28,7 @@ type Player = {
   position: WorldPosition;
   facing: FacingDirection;
   size?: BaseSize;
+  animation: PlayerAnimation;
 };
 
 type Renderable<TProps> = {
