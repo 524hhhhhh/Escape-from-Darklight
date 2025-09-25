@@ -1,8 +1,11 @@
-import { FacingDirection } from "@/types/sprite";
+import type { FacingDirection } from "@/types/sprite";
+import { TILE_SIZE } from "./map";
 
 const PLAYER = {
-  MOVE_SPEED: 200,
+  MOVE_SPEED: 180,
   MIN_FACING_SPEED: 0.05,
+  COLLIDER_W: Math.round(0.5 * TILE_SIZE.COLLISION),
+  COLLIDER_H: Math.round(0.8 * TILE_SIZE.COLLISION),
 };
 
 const SPRITE = {

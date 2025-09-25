@@ -1,22 +1,22 @@
 import React from "react";
 import { TILE } from "@/constants/map";
 import type { Viewport } from "@/types/world-state";
-import type { TileGridLayer } from "@/types/map-transform";
 import { TileCode } from "@/lib/validator/map-schema";
 import { COLORS } from "@/constants/theme";
 import { renderCellBox } from "./render-cell-box";
+import { TransformMap } from "@/types/map-transform";
 
 type Props = {
-  map: TileGridLayer;
+  map: TransformMap;
   view: Viewport;
 };
 
 export default function TileLayer({ map, view }: Props) {
   const { grid, tileSize } = map;
   const TILE_COLORS: Record<TileCode, string> = {
-    [TILE.Road]: COLORS.MAP.ROAD,
-    [TILE.Wall]: COLORS.MAP.WALL,
-    [TILE.Exit]: COLORS.MAP.EXIT,
+    [TILE.ROAD]: COLORS.MAP.ROAD,
+    [TILE.WALL]: COLORS.MAP.WALL,
+    [TILE.EXIT]: COLORS.MAP.EXIT,
   };
 
   const zoom = view.zoom ?? 1;
@@ -36,7 +36,7 @@ export default function TileLayer({ map, view }: Props) {
     const row = grid[ty];
     for (let tx = left; tx <= right; tx++) {
       const value = row[tx];
-      if (value === TILE.Road) continue;
+      if (value === TILE.ROAD) continue;
 
       const screenX = tx * tileSize - view.offsetX;
       const screenY = ty * tileSize - view.offsetY;

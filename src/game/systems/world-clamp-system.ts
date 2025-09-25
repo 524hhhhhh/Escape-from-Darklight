@@ -3,7 +3,7 @@ import { WorldSystem } from "@/types/world-engine";
 export const WorldClampSystem: WorldSystem = (world) => {
   const { player, world: bounds } = world;
   if (!player || !bounds) {
-    return world;
+    return;
   }
 
   const playerWidth = player.size?.width ?? 0;
@@ -17,6 +17,4 @@ export const WorldClampSystem: WorldSystem = (world) => {
     0,
     Math.min(player.position.worldY, bounds.height - playerHeight),
   );
-
-  return world;
 };

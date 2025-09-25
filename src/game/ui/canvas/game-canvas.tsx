@@ -10,9 +10,15 @@ import type { WorldLoopHandle, WorldSystem } from "@/types/world-engine";
 import sampleMap from "@assets/map/map.json";
 import TileLayer from "@/game/ui/world/tile-layer";
 import { createWorldState } from "@/game/ui/world/create-world-state";
+import { ExitSystem } from "@/game/systems/exit-system";
 
 type Props = { isRunning?: boolean };
-const systems: WorldSystem[] = [PhysicsSystem, WorldClampSystem, CameraSystem];
+const systems: WorldSystem[] = [
+  PhysicsSystem,
+  WorldClampSystem,
+  ExitSystem,
+  CameraSystem,
+];
 
 export default function GameCanvas({ isRunning = false }: Props) {
   const insets = useSafeAreaInsets();

@@ -1,6 +1,6 @@
 import type { FacingDirection } from "@/types/sprite";
-import type { TileGridLayer } from "@/types/map-transform";
 import type { BaseSize, WorldPosition } from "@/types/position";
+import { TransformMap } from "./map-transform";
 
 type Viewport = {
   offsetX: number;
@@ -44,7 +44,7 @@ type WorldState = {
   input: InputVector;
   player: Player;
   entities: Entities;
-  map?: TileGridLayer;
+  map?: TransformMap;
   dt?: number;
 };
 

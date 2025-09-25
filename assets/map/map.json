@@ -3,8 +3,6 @@
     "version": "1.0",
     "width": 30,
     "height": 15,
-    "tileSizeRender": 50,
-    "tileSizeCollision": 50,
     "generator": { "name": "manual", "seed": null, "params": {} }
   },
   "grid": [
@@ -70,6 +68,5 @@
     ]
   ],
   "spawn": { "tileX": 1, "tileY": 1 },
-  "exits": [{ "id": "exit-1", "tileX": 10, "tileY": 10 }],
   "objects": []
 }

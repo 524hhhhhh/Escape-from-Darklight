@@ -9,7 +9,11 @@ import type {
 } from "@/types/world-state";
 import type { FacingDirection } from "@/types/sprite";
 import { loadMap } from "@/game/map/load-map";
-import { WorldPosition } from "@/types/position";
+import type { WorldPosition } from "@/types/position";
+import {
+  determinePlayerStart,
+  determineWorldSize,
+} from "@/lib/determine-world-from-map";
 
 type CreateOptions = {
   mapJson?: unknown;
@@ -17,33 +21,6 @@ type CreateOptions = {
   zoom?: number;
   playerStart?: WorldPosition & { facing: FacingDirection };
 };
-
-function determineWorldSize(
-  loadedMap: ReturnType<typeof loadMap> | undefined,
-  fallback: World,
-): World {
-  if (!loadedMap) {
-    return fallback;
-  }
-  const { meta, tileSize } = loadedMap;
-
-  return { width: meta.width * tileSize, height: meta.height * tileSize };
-}
-
-function determinePlayerStart(
-  loadedMap: ReturnType<typeof loadMap> | undefined,
-  fallback: WorldPosition & { facing: FacingDirection },
-): WorldPosition & { facing: FacingDirection } {
-  if (!loadedMap) {
-    return fallback;
-  }
-
-  return {
-    worldX: loadedMap.spawn.centerX,
-    worldY: loadedMap.spawn.centerY,
-    facing: fallback.facing,
-  };
-}
 
 export function createWorldState({
   mapJson,
@@ -80,11 +57,7 @@ export function createWorldState({
   };
 
   if (loadedMap) {
-    state.map = {
-      grid: loadedMap.grid,
-      tileSize: loadedMap.tileSize,
-      meta: loadedMap.meta,
-    };
+    state.map = loadedMap;
   }
 
   return state;
