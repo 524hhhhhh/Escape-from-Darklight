@@ -1,9 +1,11 @@
 import React from "react";
 import type { AnimationState, FacingDirection } from "@/types/sprite-animation";
-import PlayerSprite from "./player-sprite";
 import type { Viewport } from "@/types/world-state";
 import type { WorldPosition } from "@/types/position";
 import { PLAYER } from "@/constants/player";
+import { HintController } from "@/game/systems/hint-system";
+import PlayerSprite from "@/game/ui/player/player-sprite";
+import EffectSprite from "@/game/ui/player/effect-sprite";
 
 type PlayerRenderProps = {
   position: WorldPosition;
@@ -26,14 +28,29 @@ export default function PlayerRenderer({
   const screenX = (worldX - offsetX) * zoom;
   const screenY = (worldY - offsetY) * zoom;
 
+  const hintFrame = HintController.getFrame();
+
   return (
-    <PlayerSprite
-      x={screenX}
-      y={screenY}
-      direction={facing}
-      state={state}
-      frame={frame}
-      scale={zoom * PLAYER.RENDER_SCALE}
-    />
+    <>
+      <PlayerSprite
+        x={screenX}
+        y={screenY}
+        direction={facing}
+        state={state}
+        frame={frame}
+        scale={zoom * PLAYER.RENDER_SCALE}
+      />
+
+      {hintFrame !== null && (
+        <EffectSprite
+          x={screenX}
+          y={screenY}
+          frame={hintFrame}
+          visible={true}
+          size={64}
+          anchorY={1.2}
+        />
+      )}
+    </>
   );
 }
