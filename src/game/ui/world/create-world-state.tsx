@@ -14,6 +14,7 @@ import {
   determinePlayerStart,
   determineWorldSize,
 } from "@/lib/determine-world-from-map";
+import { HintController } from "@/game/systems/hint-system";
 
 type CreateOptions = {
   mapJson?: unknown;
@@ -61,6 +62,7 @@ export function createWorldState({
   if (loadedMap) {
     state.map = loadedMap;
   }
+  HintController.reset("LOW");
 
   return state;
 }

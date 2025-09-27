@@ -12,6 +12,7 @@ import TileLayer from "@/game/ui/world/tile-layer";
 import { createWorldState } from "@/game/ui/world/create-world-state";
 import { ExitSystem } from "@/game/systems/exit-system";
 import { AnimationSystem } from "@/game/systems/animation-system";
+import { HintSystem } from "@/game/systems/hint-system";
 
 type Props = { isRunning?: boolean };
 const systems: WorldSystem[] = [
@@ -19,6 +20,7 @@ const systems: WorldSystem[] = [
   WorldClampSystem,
   ExitSystem,
   AnimationSystem,
+  HintSystem,
   CameraSystem,
 ];
 
