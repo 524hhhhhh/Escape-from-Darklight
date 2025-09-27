@@ -14,6 +14,18 @@ export function transformMap(src: MapJson): TransformMap {
   const solids = createSolidRegistry();
   buildCollisionIndex(grid, solids, TILE.WALL);
 
+  const exits: { x: number; y: number }[] = [];
+  for (let tileY = 0; tileY < grid.length; tileY++) {
+    for (let tileX = 0; tileX < grid[0].length; tileX++) {
+      if (grid[tileY][tileX] === TILE.EXIT) {
+        exits.push({
+          x: tileX * tileSize + tileSize / 2,
+          y: tileY * tileSize + tileSize / 2,
+        });
+      }
+    }
+  }
+
   return {
     grid,
     tileSize,
@@ -28,5 +40,6 @@ export function transformMap(src: MapJson): TransformMap {
     triggers: [],
     hazards: [],
     spawn: transformSpawn,
+    exits,
   };
 }
