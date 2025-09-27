@@ -13,6 +13,7 @@ import { createWorldState } from "@/game/ui/world/create-world-state";
 import { ExitSystem } from "@/game/systems/exit-system";
 import { AnimationSystem } from "@/game/systems/animation-system";
 import { HintSystem } from "@/game/systems/hint-system";
+import { stopHapticLoop } from "@/game/hint/hint-haptics";
 
 type Props = { isRunning?: boolean };
 const systems: WorldSystem[] = [
@@ -47,6 +48,7 @@ export default function GameCanvas({ isRunning = false }: Props) {
       engine.start();
     } else {
       engine.stop();
+      stopHapticLoop();
     }
   }, [isRunning]);
 

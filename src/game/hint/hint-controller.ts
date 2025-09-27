@@ -8,6 +8,7 @@ import {
 } from "@/constants/hint";
 import { TILE_SIZE } from "@/constants/map";
 import { buildPingPongFrames } from "@/lib/sprite";
+import { startHapticLoop, stopHapticLoop } from "@/game/hint/hint-haptics";
 
 type HintControllerHandle = {
   setDistance: (distance: number) => void;
@@ -39,26 +40,34 @@ export function createHintController(
 
   pingPongFrames = buildPingPongFrames(maxFrameIndex[currentState]);
 
-  function resetHintState(state: HintState) {
+  function resetHintState(state: HintState, shouldPlayHaptics = true) {
+    stopHapticLoop();
+
     currentState = state;
     pendingState = null;
     pingPongFrames = buildPingPongFrames(maxFrameIndex[state]);
     frameDelay = 1 / frameRate[state];
     frameIndex = 0;
     frameTimer = 0;
+
+    if (isActiveHint && shouldPlayHaptics) {
+      startHapticLoop(state);
+    }
   }
 
   const setDistance = (distance: number) => {
     if (isActiveHint && distance > worldTriggerZone) {
       isActiveHint = false;
       pendingState = null;
+
+      stopHapticLoop();
       return;
     }
 
     if (!isActiveHint && distance <= worldTriggerZone) {
       isActiveHint = true;
       const initialState = getDistanceState(distance, options.distanceSteps);
-      resetHintState(initialState);
+      resetHintState(initialState, true);
 
       return;
     }
@@ -95,7 +104,7 @@ export function createHintController(
       frameIndex++;
       if (frameIndex >= pingPongFrames.length) {
         if (pendingState !== null && pendingState !== currentState) {
-          resetHintState(pendingState);
+          resetHintState(pendingState, true);
         } else {
           frameIndex = 0;
         }
@@ -107,13 +116,14 @@ export function createHintController(
     if (!isActiveHint) {
       return null;
     }
+
     return pingPongFrames[frameIndex];
   };
 
   const reset = (initial: HintState = "LOW") => {
     isActiveHint = false;
     pendingState = null;
-    resetHintState(initial);
+    resetHintState(initial, false);
   };
 
   return { setDistance, tick, getFrame, reset };
