@@ -22,6 +22,7 @@ type TransformMap = {
 
   solids: SolidRegistry;
   spawn: TransformSpawn;
+  exits: { x: number; y: number }[];
 
   triggers?: unknown[];
   hazards?: unknown[];
