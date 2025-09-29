@@ -2,13 +2,13 @@ import React from "react";
 import { Modal, View } from "react-native";
 import Button from "@/components/buttons/button";
 import IconButton from "@/components/buttons/icon-button";
-import { modalStyles } from "./modal-styles";
-import AppText from "../text/app-text";
+import { modalStyles } from "@/components/modals/modal-styles";
+import AppText from "@/components/text/app-text";
 
 type ModalProps = {
   visible: boolean;
-  title: string;
-  subTitle?: string;
+  title: string | null;
+  subTitle?: string | null;
   primaryAction: { title: string; onPress: () => void };
   secondaryAction: { title: string; onPress: () => void };
   onClose?: () => void;
