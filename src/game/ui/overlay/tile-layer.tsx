@@ -3,8 +3,8 @@ import { TILE } from "@/constants/map";
 import type { Viewport } from "@/types/world-state";
 import { TileCode } from "@/lib/validator/map-schema";
 import { COLORS } from "@/constants/theme";
+import type { TransformMap } from "@/types/map-transform";
 import { renderCellBox } from "./render-cell-box";
-import { TransformMap } from "@/types/map-transform";
 
 type Props = {
   map: TransformMap;

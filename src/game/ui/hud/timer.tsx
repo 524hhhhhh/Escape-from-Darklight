@@ -36,5 +36,6 @@ const styles = StyleSheet.create({
     right: 0,
     alignItems: "center",
     pointerEvents: "none",
+    zIndex: 10,
   },
 });

@@ -6,7 +6,7 @@ import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import Timer from "@/game/ui/canvas/timer";
+import Timer from "@/game/ui/hud/timer";
 import { gameResult } from "@/lib/game-result";
 
 export default function GameScreen() {
