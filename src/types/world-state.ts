@@ -3,7 +3,7 @@ import type {
   PlayerAnimation,
 } from "@/types/sprite-animation";
 import type { BaseSize, WorldPosition } from "@/types/position";
-import { TransformMap } from "./map-transform";
+import type { TransformMap } from "@/types/map-transform";
 
 type Viewport = {
   offsetX: number;
@@ -31,15 +31,10 @@ type Player = {
   animation: PlayerAnimation;
 };
 
-type Renderable<TProps> = {
-  renderer: React.ComponentType<TProps>;
-  props: TProps;
-};
-
 type PlayerSpriteProps = { playerRef: Player; view: Viewport };
 
 type Entities = {
-  playerSprite: Renderable<PlayerSpriteProps>;
+  player: Player;
 };
 
 type WorldState = {
