@@ -2,7 +2,8 @@ import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import { Text, Pressable, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
+import AppText from "@/components/text/app-text";
 
 export default function HomeScreen() {
   const navigation =
@@ -11,10 +12,14 @@ export default function HomeScreen() {
   return (
     <Pressable style={styles.root} onPress={() => navigation.replace("Stage")}>
       <View style={styles.logoBox}>
-        <Text style={styles.logoText}>로고</Text>
+        <AppText variant="TITLE_XL" style={styles.logoText}>
+          로고
+        </AppText>
       </View>
 
-      <Text style={styles.guide}>시작하려면 누르세요</Text>
+      <AppText variant="TITLE_M" style={styles.guide}>
+        시작하려면 누르세요
+      </AppText>
     </Pressable>
   );
 }
@@ -36,16 +41,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   logoText: {
-    fontSize: 28,
-    fontWeight: "700",
     color: "#111827",
   },
   guide: {
     position: "absolute",
     bottom: 32,
     textAlign: "center",
-    fontSize: 24,
-    color: COLORS.TEXT.PRIMARY,
     opacity: 0.9,
   },
 });

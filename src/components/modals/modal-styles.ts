@@ -26,17 +26,11 @@ export const modalStyles = StyleSheet.create({
     alignItems: "center",
   },
   title: {
-    fontSize: 40,
-    fontWeight: "800",
-    color: COLORS.TEXT.PRIMARY,
     letterSpacing: 1,
     marginTop: 8,
   },
   subTitle: {
     marginTop: 8,
-    fontSize: 20,
-    fontWeight: "600",
-    color: COLORS.TEXT.PRIMARY,
     opacity: 0.9,
   },
   actions: {

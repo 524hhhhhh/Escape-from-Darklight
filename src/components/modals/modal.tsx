@@ -1,8 +1,9 @@
 import React from "react";
-import { Modal, View, Text } from "react-native";
+import { Modal, View } from "react-native";
 import Button from "@/components/buttons/button";
 import IconButton from "@/components/buttons/icon-button";
 import { modalStyles } from "./modal-styles";
+import AppText from "../text/app-text";
 
 type ModalProps = {
   visible: boolean;
@@ -40,17 +41,23 @@ export default function AppModal({
             />
           )}
 
-          <Text style={modalStyles.title}>{title}</Text>
+          <AppText variant="TITLE_XL" style={modalStyles.title}>
+            {title}
+          </AppText>
           {subTitle ? (
-            <Text style={modalStyles.subTitle}>{subTitle}</Text>
+            <AppText variant="TITLE_R" style={modalStyles.subTitle}>
+              {subTitle}
+            </AppText>
           ) : null}
 
           <View style={modalStyles.actions}>
             <Button
+              variant="TITLE_M"
               title={primaryAction.title}
               onPress={primaryAction.onPress}
             />
             <Button
+              variant="TITLE_M"
               title={secondaryAction.title}
               onPress={secondaryAction.onPress}
             />

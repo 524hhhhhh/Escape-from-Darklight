@@ -1,13 +1,22 @@
-import { COLORS } from "@/constants/theme";
-import { Pressable, Text, StyleSheet, ViewStyle } from "react-native";
+import { COLORS, FONTS } from "@/constants/theme";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
+import AppText from "@/components/text/app-text";
+
+type Variant = keyof typeof FONTS;
 
 type ButtonProps = {
   title: string;
   onPress: () => void;
   style?: ViewStyle;
+  variant?: Variant;
 };
 
-export default function Button({ title, onPress, style }: ButtonProps) {
+export default function Button({
+  title,
+  onPress,
+  style,
+  variant,
+}: ButtonProps) {
   return (
     <Pressable
       style={({ pressed }) => [
@@ -17,7 +26,7 @@ export default function Button({ title, onPress, style }: ButtonProps) {
       ]}
       onPress={onPress}
     >
-      <Text style={styles.text}>{title}</Text>
+      <AppText variant={variant}>{title}</AppText>
     </Pressable>
   );
 }
@@ -30,10 +39,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
-  },
-  text: {
-    color: COLORS.TEXT.PRIMARY,
-    fontSize: 24,
-    fontWeight: "600",
   },
 });

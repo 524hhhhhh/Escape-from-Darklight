@@ -1,6 +1,7 @@
 import { COLORS } from "@/constants/theme";
 import React from "react";
-import { Pressable, Text, StyleSheet, ViewStyle } from "react-native";
+import { Pressable, StyleSheet, ViewStyle } from "react-native";
+import AppText from "@/components/text/app-text";
 
 type IconButtonProps = {
   onPress: () => void;
@@ -16,7 +17,11 @@ export default function IconButton({
   style,
 }: IconButtonProps) {
   const content =
-    typeof icon === "string" ? <Text style={styles.icon}>{icon}</Text> : icon;
+    typeof icon === "string" ? (
+      <AppText variant="TITLE_M">{icon}</AppText>
+    ) : (
+      icon
+    );
 
   return (
     <Pressable
@@ -41,10 +46,5 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
     justifyContent: "center",
-  },
-  icon: {
-    color: "#fff",
-    fontSize: 24,
-    fontWeight: "800",
   },
 });
