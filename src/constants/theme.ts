@@ -14,4 +14,13 @@ const COLORS = {
   },
 };
 
-export { COLORS };
+const FONTS = {
+  TITLE_XXL: 42,
+  TITLE_XL: 30,
+  TITLE_M: 26,
+  TITLE_R: 22,
+  BODY: 16,
+  CAPTION: 14,
+};
+
+export { COLORS, FONTS };
