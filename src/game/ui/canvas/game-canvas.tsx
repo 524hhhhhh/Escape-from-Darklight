@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import WorldRenderer from "@/game/world-renderer";
+import { WorldRenderer } from "@/game/world-renderer";
 import { PhysicsSystem } from "@/game/systems/physics-system";
 import { CameraSystem } from "@/game/systems/camera-system";
 import { WorldClampSystem } from "@/game/systems/world-clamp-system";
 import Joystick from "@/game/ui/controls/joystick";
-import type { WorldLoopHandle, WorldSystem } from "@/types/world-engine";
+import type { WorldSystem } from "@/types/world-engine";
 import sampleMap from "@assets/map/map.json";
 import TileLayer from "@/game/ui/world/tile-layer";
 import { createWorldState } from "@/game/ui/world/create-world-state";
@@ -29,7 +29,6 @@ export default function GameCanvas({ isRunning = false }: Props) {
   const insets = useSafeAreaInsets();
   const joyStyle = { left: 20 + insets.left, bottom: insets.bottom + 20 };
 
-  const engineRef = useRef<WorldLoopHandle | null>(null);
   const initialWorld = useMemo(
     () => createWorldState({ mapJson: sampleMap }),
     [],
@@ -39,15 +38,7 @@ export default function GameCanvas({ isRunning = false }: Props) {
   const layoutReadyRef = useRef(false);
 
   useEffect(() => {
-    const engine = engineRef.current;
-    if (!engine) {
-      return;
-    }
-
-    if (isRunning) {
-      engine.start();
-    } else {
-      engine.stop();
+    if (!isRunning) {
       stopHapticLoop();
     }
   }, [isRunning]);
@@ -63,7 +54,6 @@ export default function GameCanvas({ isRunning = false }: Props) {
   return (
     <View style={styles.root}>
       <WorldRenderer
-        ref={engineRef}
         isRunning={isRunning}
         style={styles.canvas}
         worldMap={worldRef.current}
