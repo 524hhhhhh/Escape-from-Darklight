@@ -1,12 +1,5 @@
-import React from "react";
 import { createPlayer } from "@/game/entities/player";
-import PlayerRenderer from "@/game/ui/player/player-renderer";
-import type {
-  PlayerSpriteProps,
-  Viewport,
-  World,
-  WorldState,
-} from "@/types/world-state";
+import type { Viewport, World } from "@/types/world-state";
 import type { FacingDirection } from "@/types/sprite-animation";
 import { loadMap } from "@/game/map/load-map";
 import type { WorldPosition } from "@/types/position";
@@ -15,6 +8,7 @@ import {
   determineWorldSize,
 } from "@/lib/determine-world-from-map";
 import { HintController } from "@/game/systems/hint-system";
+import type { LightingWorldState } from "@/types/light";
 
 type CreateOptions = {
   mapJson?: unknown;
@@ -28,7 +22,7 @@ export function createWorldState({
   world = { width: 2000, height: 1200 },
   zoom = 2,
   playerStart = { worldX: 240, worldY: 160, facing: "N" as FacingDirection },
-}: CreateOptions = {}): WorldState & { version: number } {
+}: CreateOptions = {}): LightingWorldState & { version: number } {
   const loadedMap = mapJson ? loadMap(mapJson) : undefined;
 
   const worldSizePx: World = determineWorldSize(loadedMap, world);
@@ -37,32 +31,26 @@ export function createWorldState({
   const view: Viewport = { offsetX: 0, offsetY: 0, zoom, width: 0, height: 0 };
   const player = createPlayer(start);
 
-  const state: WorldState & { version: number } = {
+  const state: LightingWorldState & { version: number } = {
     view,
     world: worldSizePx,
     input: { x: 0, y: 0, power: 0 },
     player,
     entities: {
-      playerSprite: {
-        renderer: ({ playerRef, view: viewport }: PlayerSpriteProps) => (
-          <PlayerRenderer
-            position={playerRef.position}
-            facing={playerRef.facing}
-            view={viewport}
-            state={playerRef.animation.state}
-            frame={playerRef.animation.frameIndex}
-          />
-        ),
-        props: { playerRef: player, view },
-      },
+      player,
     },
+    light: {
+      lightLife: 1,
+    },
+    lightFrame: {
+      worldCenterX: start.worldX,
+      worldCenterY: start.worldY,
+      currentRadius: 0,
+    },
+    map: loadedMap,
     version: 0,
   };
 
-  if (loadedMap) {
-    state.map = loadedMap;
-  }
   HintController.reset("LOW");
-
   return state;
 }

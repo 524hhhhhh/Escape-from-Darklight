@@ -4,24 +4,24 @@ import { useGameLoop } from "@/hooks/use-game-loop";
 import type { WorldSystem } from "@/types/world-engine";
 import { WorldState } from "@/types/world-state";
 
-type Props = {
-  systems?: WorldSystem[];
-  worldMap: WorldState;
+type Props<T extends WorldState> = {
+  systems?: WorldSystem<T>[];
+  worldMap: T;
   isRunning?: boolean;
   style?: StyleProp<ViewStyle>;
   onLayout?: (e: LayoutChangeEvent) => void;
-  renderOverlay?: (world: WorldState) => React.ReactNode;
+  renderOverlay?: (world: T) => React.ReactNode;
 };
 
-export function WorldRenderer({
+export function WorldEngineLayer<T extends WorldState>({
   systems = [],
   worldMap,
   isRunning = false,
   style,
   onLayout,
   renderOverlay,
-}: Props) {
-  const loop = useGameLoop(worldMap, systems);
+}: Props<T>) {
+  const loop = useGameLoop<T>(worldMap, systems);
 
   useEffect(() => {
     if (isRunning) {
@@ -32,21 +32,10 @@ export function WorldRenderer({
   }, [isRunning, loop]);
 
   const world = loop.getWorld();
-  const rendered = Object.entries(world.entities)
-    .map(([id, entity]) => {
-      if (!entity.renderer) {
-        return null;
-      }
-
-      const Renderer = entity.renderer;
-      return <Renderer key={id} {...entity.props} />;
-    })
-    .filter(Boolean);
 
   return (
     <View style={style} onLayout={onLayout}>
       {renderOverlay?.(world)}
-      {rendered}
     </View>
   );
 }
