@@ -4,11 +4,11 @@ import { WorldState } from "@/types/world-state";
 
 const INT31 = 2147483647;
 
-export function useGameLoop(
-  initialWorldState: WorldState,
-  systems: WorldSystem[],
+export function useGameLoop<T extends WorldState>(
+  initialWorldState: T,
+  systems: WorldSystem<T>[],
 ) {
-  const worldStateRef = useRef<WorldState>(initialWorldState);
+  const worldStateRef = useRef<T>(initialWorldState);
   const [, setTick] = useState(0);
 
   const rafId = useRef<number | null>(null);
@@ -71,7 +71,7 @@ export function useGameLoop(
     cancelRaf();
   }, [cancelRaf]);
 
-  const resetWorld = useCallback((newWorld: WorldState) => {
+  const resetWorld = useCallback((newWorld: T) => {
     worldStateRef.current = newWorld;
     lastFrameTime.current = null;
     setTick((tick) => (tick + 1) % INT31);
