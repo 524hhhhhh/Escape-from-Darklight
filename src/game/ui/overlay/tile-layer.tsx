@@ -17,6 +17,8 @@ export default function TileLayer({ map, view }: Props) {
     [TILE.ROAD]: COLORS.MAP.ROAD,
     [TILE.WALL]: COLORS.MAP.WALL,
     [TILE.EXIT]: COLORS.MAP.EXIT,
+    [TILE.ELECTRIC]: COLORS.MAP.ELECTRIC,
+    [TILE.SPIKE]: COLORS.MAP.SPIKE,
   };
 
   const zoom = view.zoom ?? 1;
