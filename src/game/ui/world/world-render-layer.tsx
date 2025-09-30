@@ -42,11 +42,11 @@ export function WorldRenderLayer({ world }: Props) {
       )}
 
       <PlayerRenderer
-        position={world.player.position}
-        facing={world.player.facing}
+        position={world.entities.player.position}
+        facing={world.entities.player.facing}
         view={world.view}
-        state={world.player.animation.state}
-        frame={world.player.animation.frameIndex}
+        state={world.entities.playerSprite.state}
+        frame={world.entities.playerSprite.frameIndex}
       />
     </>
   );
