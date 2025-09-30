@@ -1,6 +1,6 @@
 type FacingDirection = "S" | "SE" | "E" | "NE" | "N" | "NW" | "W" | "SW";
 
-type AnimationState = "IDLE" | "RUN" | "HIT";
+type AnimationState = "IDLE" | "RUN" | "HIT" | "DEATH";
 
 type PlayerSprite = {
   state: AnimationState;
@@ -9,6 +9,7 @@ type PlayerSprite = {
 
   hitFrameRate?: number;
   hitEndAt?: number;
+  deathEndAt?: number;
 };
 
 export type { FacingDirection, AnimationState, PlayerSprite };

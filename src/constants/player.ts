@@ -17,6 +17,7 @@ const SPRITE = {
     IDLE: { FRAMES: 4, SOURCE: require("@assets/player/pink_idle.png") },
     RUN: { FRAMES: 4, SOURCE: require("@assets/player/pink_run.png") },
     HIT: { FRAMES: 4, SOURCE: require("@assets/player/pink_hit.png") },
+    DEATH: { FRAMES: 4, SOURCE: require("@assets/player/pink_death.png") },
   } as const,
   DIRECTIONS: [
     "S",
@@ -34,11 +35,21 @@ const FRAME_RATE = {
   IDLE: 4,
   RUN: 10,
   HIT: 8,
+  DEATH: 10,
 };
+
+const DEATH_HOLD_FRAME = 1;
 
 const INPUT_DEADZONE = 0.08;
 
 const isRightFacing = (direction: FacingDirection) =>
   direction === "E" || direction === "NE" || direction === "SE";
 
-export { PLAYER, SPRITE, isRightFacing, FRAME_RATE, INPUT_DEADZONE };
+export {
+  PLAYER,
+  SPRITE,
+  isRightFacing,
+  FRAME_RATE,
+  INPUT_DEADZONE,
+  DEATH_HOLD_FRAME,
+};
