@@ -1,12 +1,17 @@
 type HazardKind = "electric" | "spike";
 
-type Hazard = {
+type HazardTemplate = {
   kind: HazardKind;
   damage: number;
-  cooldownMs: number;
+  cooldown: number;
   haptics: "Light" | "Medium" | "Heavy";
 };
 
-type HazardTemplateMap = Partial<Record<number, Hazard>>;
+type HazardTile = HazardTemplate & {
+  tileX: number;
+  tileY: number;
+};
 
-export type { HazardKind, Hazard, HazardTemplateMap };
+type HazardTemplateMap = Partial<Record<number, HazardTemplate>>;
+
+export type { HazardKind, HazardTemplateMap, HazardTile };
