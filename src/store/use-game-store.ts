@@ -10,13 +10,17 @@ export const useGameStore = create<GameState>((set, get) => ({
   hp: PLAYER.MAX_HP,
   maxHp: PLAYER.MAX_HP,
 
+  enterDeath: (reason: GameOverReason) =>
+    set(() => ({ status: { type: "death", reason } })),
+
   applyDamage: (amount) => {
-    const { hp, gameOver } = get();
+    const { hp, enterDeath } = get();
     const next = Math.max(0, hp - Math.max(0, amount));
 
     set({ hp: next });
+
     if (next === 0) {
-      gameOver("death");
+      enterDeath("hp");
     }
   },
 
@@ -57,7 +61,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
       const next = Math.max(0, state.status.time - 1);
       if (next === 0) {
-        return { status: { type: "gameover", reason: "timeout" } };
+        return { status: { type: "death", reason: "timeout" } };
       }
 
       return { status: { type: "playing", time: next } };
