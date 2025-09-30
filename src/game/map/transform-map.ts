@@ -1,9 +1,15 @@
 import type { TransformMap, TransformSpawn } from "@/types/map-transform";
 import { MapJson } from "@/lib/validator/map-schema";
-import { transformWorldEntity } from "../../lib/transform-world-entity";
-import { buildCollisionIndex } from "./collision/build-collision-index";
-import { createSolidRegistry } from "./collision/create-collision-registries";
-import { TILE, TILE_SIZE } from "@/constants/map";
+import { transformWorldEntity } from "@/lib/transform-world-entity";
+import {
+  buildCollisionIndex,
+  buildHazardIndex,
+} from "@/game/map/collision/build-tile-index";
+import {
+  createHazardRegistry,
+  createSolidRegistry,
+} from "@/game/map/collision/create-collision-registries";
+import { HAZARDS_TEMPLATES, TILE, TILE_SIZE } from "@/constants/map";
 
 export function transformMap(src: MapJson): TransformMap {
   const { meta, grid, spawn } = src;
@@ -13,6 +19,9 @@ export function transformMap(src: MapJson): TransformMap {
 
   const solids = createSolidRegistry();
   buildCollisionIndex(grid, solids, TILE.WALL);
+
+  const hazards = createHazardRegistry();
+  buildHazardIndex(grid, hazards, HAZARDS_TEMPLATES);
 
   const exits: { x: number; y: number }[] = [];
   for (let tileY = 0; tileY < grid.length; tileY++) {
@@ -38,7 +47,7 @@ export function transformMap(src: MapJson): TransformMap {
     },
     solids,
     triggers: [],
-    hazards: [],
+    hazards,
     spawn: transformSpawn,
     exits,
   };
