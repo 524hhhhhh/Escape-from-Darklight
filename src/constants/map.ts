@@ -17,13 +17,13 @@ const HAZARDS_TEMPLATES: HazardTemplateMap = {
   [TILE.ELECTRIC]: {
     kind: "electric",
     damage: 1,
-    cooldownMs: 300,
+    cooldown: 500,
     haptics: "Light",
   },
   [TILE.SPIKE]: {
     kind: "spike",
     damage: 3,
-    cooldownMs: 600,
+    cooldown: 800,
     haptics: "Heavy",
   },
 };
