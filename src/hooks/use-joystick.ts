@@ -1,7 +1,7 @@
 import { StickOffset, StickVector } from "@/types/joystick";
 import { useState, useCallback, useRef } from "react";
 import { PanResponder, GestureResponderEvent } from "react-native";
-import { normalize, clamp } from "@/utils/math";
+import { normalizeVector, limitDistance } from "@/utils/math";
 import JOYSTICK from "@/constants/joystick";
 import { applyDeadzone, vectorToAngle } from "@/utils/joystick-input";
 
@@ -12,13 +12,10 @@ type Props = {
 export function useJoystick({ onChange }: Props) {
   const [stickOffset, setStickOffset] = useState<StickOffset>({ x: 0, y: 0 });
 
-  const radius = JOYSTICK.RADIUS;
   const maxDistance = JOYSTICK.RADIUS - JOYSTICK.STICK_RADIUS;
 
-  const handleDragEvent = (e: GestureResponderEvent) => {
-    const { locationX, locationY } = e.nativeEvent;
-    applyDrag(locationX - radius, locationY - radius);
-  };
+  const centerXRef = useRef(0);
+  const centerYRef = useRef(0);
 
   const resetStick = useCallback(() => {
     setStickOffset({ x: 0, y: 0 });
@@ -27,8 +24,8 @@ export function useJoystick({ onChange }: Props) {
 
   const applyDrag = useCallback(
     (dx: number, dy: number) => {
-      const { directionX, directionY, length } = normalize(dx, dy);
-      const limitedDistance = clamp(length, maxDistance);
+      const { directionX, directionY, length } = normalizeVector(dx, dy);
+      const limitedDistance = limitDistance(length, maxDistance);
 
       setStickOffset({
         x: directionX * limitedDistance,
@@ -51,12 +48,26 @@ export function useJoystick({ onChange }: Props) {
     [maxDistance, onChange],
   );
 
+  const handleGrantStick = (e: GestureResponderEvent) => {
+    const { pageX, pageY } = e.nativeEvent;
+    centerXRef.current = pageX;
+    centerYRef.current = pageY;
+
+    applyDrag(0, 0);
+  };
+
+  const handleMoveStick = (e: GestureResponderEvent) => {
+    const { pageX, pageY } = e.nativeEvent;
+
+    applyDrag(pageX - centerXRef.current, pageY - centerYRef.current);
+  };
+
   const panResponder = useRef(
     PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
-      onPanResponderGrant: handleDragEvent,
-      onPanResponderMove: handleDragEvent,
+      onPanResponderGrant: handleGrantStick,
+      onPanResponderMove: handleMoveStick,
       onPanResponderRelease: resetStick,
       onPanResponderTerminate: resetStick,
     }),
