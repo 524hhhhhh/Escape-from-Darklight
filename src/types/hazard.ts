@@ -14,4 +14,4 @@ type HazardTile = HazardTemplate & {
 
 type HazardTemplateMap = Partial<Record<number, HazardTemplate>>;
 
-export type { HazardKind, HazardTemplateMap, HazardTile };
+export type { HazardKind, HazardTemplate, HazardTemplateMap, HazardTile };

@@ -1,4 +1,4 @@
-import { Hazard } from "@/types/hazard";
+import { HazardTemplate } from "@/types/hazard";
 import type { HazardRegistry, SolidRegistry } from "@/types/registry";
 
 const key = (x: number, y: number) => `${x},${y}`;
@@ -20,7 +20,7 @@ function createSolidRegistry(): SolidRegistry {
 }
 
 function createHazardRegistry(): HazardRegistry {
-  const map = new Map<string, Hazard>();
+  const map = new Map<string, HazardTemplate>();
   return {
     get: (x, y) => map.get(key(x, y)),
     set: (x, y, hazard) => {

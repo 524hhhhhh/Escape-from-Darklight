@@ -1,4 +1,4 @@
-import type { Hazard } from "@/types/hazard";
+import type { HazardTemplate } from "@/types/hazard";
 
 type SolidRegistry = {
   has(tileX: number, tileY: number): boolean;
@@ -8,8 +8,8 @@ type SolidRegistry = {
 };
 
 type HazardRegistry = {
-  get(tileX: number, tileY: number): Hazard | undefined;
-  set(tileX: number, tileY: number, hazard: Hazard): void;
+  get(tileX: number, tileY: number): HazardTemplate | undefined;
+  set(tileX: number, tileY: number, hazard: HazardTemplate): void;
   delete(tileX: number, tileY: number): void;
   clear(): void;
 };
