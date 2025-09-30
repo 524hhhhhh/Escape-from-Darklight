@@ -7,7 +7,7 @@ function isSolidAtWorld(map: TransformMap, x: number, y: number): boolean {
   const { width, height } = map.meta;
   const { tileX, tileY } = worldToTile(x, y, tileSize, width, height);
 
-  return map.solids?.has(tileX, tileY) ?? false;
+  return map.solids.has(tileX, tileY) ?? false;
 }
 
 function isExitAtWorld(

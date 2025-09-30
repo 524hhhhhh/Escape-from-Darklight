@@ -5,7 +5,7 @@ import type {
   CenterPosition,
   WorldPosition,
 } from "@/types/position";
-import type { SolidRegistry } from "@/types/registry";
+import type { HazardRegistry, SolidRegistry } from "@/types/registry";
 
 type TransformMeta = BaseSize & {
   tileRenderSize: number;
@@ -21,11 +21,11 @@ type TransformMap = {
   meta: TransformMeta;
 
   solids: SolidRegistry;
+  hazards: HazardRegistry;
+  triggers?: unknown[];
+
   spawn: TransformSpawn;
   exits: { x: number; y: number }[];
-
-  triggers?: unknown[];
-  hazards?: unknown[];
 };
 
 export type { TransformMeta, TransformSpawn, TransformMap };
