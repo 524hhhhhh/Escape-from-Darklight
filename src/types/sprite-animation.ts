@@ -1,11 +1,15 @@
 type FacingDirection = "S" | "SE" | "E" | "NE" | "N" | "NW" | "W" | "SW";
 
-type AnimationState = "IDLE" | "RUN";
+type AnimationState = "IDLE" | "RUN" | "HIT" | "DEATH";
 
-type PlayerAnimation = {
+type PlayerSprite = {
   state: AnimationState;
   frameIndex: number;
   frameTimer: number;
+
+  hitFrameRate?: number;
+  hitEndAt?: number;
+  deathEndAt?: number;
 };
 
-export type { FacingDirection, AnimationState, PlayerAnimation };
+export type { FacingDirection, AnimationState, PlayerSprite };

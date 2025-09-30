@@ -7,7 +7,7 @@ import AppText from "@/components/text/app-text";
 
 type ModalProps = {
   visible: boolean;
-  title: string | null;
+  title: string | null | undefined;
   subTitle?: string | null;
   primaryAction: { title: string; onPress: () => void };
   secondaryAction: { title: string; onPress: () => void };

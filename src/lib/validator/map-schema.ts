@@ -5,6 +5,8 @@ export const TileCodeSchema = z.union([
   z.literal(TILE.ROAD),
   z.literal(TILE.WALL),
   z.literal(TILE.EXIT),
+  z.literal(TILE.ELECTRIC),
+  z.literal(TILE.SPIKE),
 ]);
 
 export const TileGridSchema = z.array(z.array(TileCodeSchema));

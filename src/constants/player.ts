@@ -3,6 +3,7 @@ import { TILE_SIZE } from "./map";
 
 const PLAYER = {
   SPEED: 120,
+  MAX_HP: 20,
   MIN_FACING_SPEED: 0.05,
   COLLIDER_W: Math.round(0.3 * TILE_SIZE.COLLISION),
   COLLIDER_H: Math.round(0.5 * TILE_SIZE.COLLISION),
@@ -13,8 +14,10 @@ const PLAYER = {
 const SPRITE = {
   FRAME_SIZE: 24,
   CLIPS: {
-    IDLE: { FRAMES: 4, SOURCE: require("@assets/pink_idle.png") },
-    RUN: { FRAMES: 4, SOURCE: require("@assets/pink_run.png") },
+    IDLE: { FRAMES: 4, SOURCE: require("@assets/player/pink_idle.png") },
+    RUN: { FRAMES: 4, SOURCE: require("@assets/player/pink_run.png") },
+    HIT: { FRAMES: 4, SOURCE: require("@assets/player/pink_hit.png") },
+    DEATH: { FRAMES: 4, SOURCE: require("@assets/player/pink_death.png") },
   } as const,
   DIRECTIONS: [
     "S",
@@ -31,11 +34,22 @@ const SPRITE = {
 const FRAME_RATE = {
   IDLE: 4,
   RUN: 10,
+  HIT: 8,
+  DEATH: 10,
 };
+
+const DEATH_HOLD_FRAME = 1;
 
 const INPUT_DEADZONE = 0.08;
 
 const isRightFacing = (direction: FacingDirection) =>
   direction === "E" || direction === "NE" || direction === "SE";
 
-export { PLAYER, SPRITE, isRightFacing, FRAME_RATE, INPUT_DEADZONE };
+export {
+  PLAYER,
+  SPRITE,
+  isRightFacing,
+  FRAME_RATE,
+  INPUT_DEADZONE,
+  DEATH_HOLD_FRAME,
+};

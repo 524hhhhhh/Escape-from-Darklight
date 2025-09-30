@@ -11,6 +11,8 @@ const COLORS = {
     WALL: "rgba(254, 59, 192, 0.8)",
     EXIT: "rgba(0, 200, 255, 0.6)",
     ROAD: "transparent",
+    ELECTRIC: "#F2F527",
+    SPIKE: "#00731A",
   },
 };
 

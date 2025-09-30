@@ -1,13 +1,15 @@
 import type { WorldSystem } from "@/types/world-engine";
 import type { LightFrame, LightingWorldState } from "@/types/light";
-import { clampToRatio, deltaSeconds, lerp } from "@/utils/math";
+import { clampToRatio, lerp } from "@/utils/math";
 import { LIGHT_RADIUS_WORLD } from "@/constants/light";
+import { deltaSeconds } from "@/utils/time";
 
 export const LightSystem: WorldSystem<LightingWorldState> = (
   world,
   frameInfo,
 ) => {
-  const { view, player, light } = world;
+  const { view, entities, light } = world;
+  const player = entities.player;
 
   if (!world.lightFrame) {
     world.lightFrame = { worldCenterX: 0, worldCenterY: 0, currentRadius: 0 };

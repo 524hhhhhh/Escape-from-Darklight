@@ -1,6 +1,6 @@
-import { createPlayer } from "@/game/entities/player";
+import { createPlayer } from "@/game/entities/create-player";
 import type { Viewport, World } from "@/types/world-state";
-import type { FacingDirection } from "@/types/sprite-animation";
+import type { FacingDirection, PlayerSprite } from "@/types/sprite-animation";
 import { loadMap } from "@/game/map/load-map";
 import type { WorldPosition } from "@/types/position";
 import {
@@ -30,14 +30,19 @@ export function createWorldState({
 
   const view: Viewport = { offsetX: 0, offsetY: 0, zoom, width: 0, height: 0 };
   const player = createPlayer(start);
+  const playerSprite: PlayerSprite = {
+    state: "IDLE",
+    frameIndex: 0,
+    frameTimer: 0,
+  };
 
   const state: LightingWorldState & { version: number } = {
     view,
     world: worldSizePx,
     input: { x: 0, y: 0, power: 0 },
-    player,
     entities: {
       player,
+      playerSprite,
     },
     light: {
       lightLife: 1,
@@ -48,6 +53,7 @@ export function createWorldState({
       currentRadius: 0,
     },
     map: loadedMap,
+    dt: 0,
     version: 0,
   };
 

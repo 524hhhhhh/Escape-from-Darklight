@@ -1,11 +1,14 @@
 import { WorldSystem } from "@/types/world-engine";
-import { deltaSeconds, lerp } from "@/utils/math";
+import { lerp } from "@/utils/math";
+import { deltaSeconds } from "@/utils/time";
 
 const SMOOTH = 0.2;
 const DEADZONE = 0.5;
 
 export const CameraSystem: WorldSystem = (world, frameInfo) => {
-  const { player, view, world: bounds } = world;
+  const { entities, view, world: bounds } = world;
+  const player = entities.player;
+
   if (!player || !view) {
     return;
   }

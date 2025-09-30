@@ -1,13 +1,15 @@
 import { WorldSystem } from "@/types/world-engine";
 
 export const WorldClampSystem: WorldSystem = (world) => {
-  const { player, world: bounds } = world;
+  const { entities, world: bounds } = world;
+  const player = entities.player;
+
   if (!player || !bounds) {
     return;
   }
 
-  const playerWidth = player.size?.width ?? 0;
-  const playerHeight = player.size?.height ?? 0;
+  const playerWidth = player.halfW * 2;
+  const playerHeight = player.halfH * 2;
 
   player.position.worldX = Math.max(
     0,
