@@ -1,5 +1,6 @@
 import { WorldSystem } from "@/types/world-engine";
-import { deltaSeconds, lerp } from "@/utils/math";
+import { lerp } from "@/utils/math";
+import { deltaSeconds } from "@/utils/time";
 
 const SMOOTH = 0.2;
 const DEADZONE = 0.5;

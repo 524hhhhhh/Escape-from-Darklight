@@ -1,5 +1,5 @@
 import type { WorldSystem } from "@/types/world-engine";
-import { deltaSeconds } from "@/utils/math";
+import { deltaSeconds } from "@/utils/time";
 import { createHintController } from "@/game/hint/hint-controller";
 import { HINT_DISTANCE_STEP, HINT_TRIGGER_ZONE } from "@/constants/hint";
 

@@ -2,7 +2,7 @@ import { PLAYER } from "@/constants/player";
 import { checkAABBCollision } from "@/lib/map-collision";
 import type { WorldSystem } from "@/types/world-engine";
 import { vectorToDirection } from "@/utils/direction";
-import { deltaSeconds } from "@/utils/math";
+import { deltaSeconds } from "@/utils/time";
 
 export const PhysicsSystem: WorldSystem = (world, frameInfo) => {
   const dt = deltaSeconds(frameInfo);

@@ -1,7 +1,8 @@
 import type { WorldSystem } from "@/types/world-engine";
 import type { LightFrame, LightingWorldState } from "@/types/light";
-import { clampToRatio, deltaSeconds, lerp } from "@/utils/math";
+import { clampToRatio, lerp } from "@/utils/math";
 import { LIGHT_RADIUS_WORLD } from "@/constants/light";
+import { deltaSeconds } from "@/utils/time";
 
 export const LightSystem: WorldSystem<LightingWorldState> = (
   world,
