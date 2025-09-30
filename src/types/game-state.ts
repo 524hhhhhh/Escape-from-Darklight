@@ -9,6 +9,11 @@ type GameStatus =
 type GameState = {
   runId: number;
   status: GameStatus;
+  hp: number;
+  maxHp: number;
+
+  applyDamage: (amount: number) => void;
+  resetHp: () => void;
 
   restartGame: () => void;
   resetGame: () => void;
