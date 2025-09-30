@@ -1,9 +1,6 @@
-import type {
-  FacingDirection,
-  PlayerAnimation,
-} from "@/types/sprite-animation";
-import type { BaseSize, WorldPosition } from "@/types/position";
 import type { TransformMap } from "@/types/map-transform";
+import type { Player } from "@/types/player";
+import type { PlayerSprite } from "@/types/sprite-animation";
 
 type Viewport = {
   offsetX: number;
@@ -24,34 +21,18 @@ type InputVector = {
   power: number;
 };
 
-type Player = {
-  position: WorldPosition;
-  facing: FacingDirection;
-  size?: BaseSize;
-  animation: PlayerAnimation;
-};
-
-type PlayerSpriteProps = { playerRef: Player; view: Viewport };
-
 type Entities = {
   player: Player;
+  playerSprite: PlayerSprite;
 };
 
 type WorldState = {
   view: Viewport;
   world: World;
   input: InputVector;
-  player: Player;
   entities: Entities;
   map?: TransformMap;
-  dt?: number;
+  dt: number;
 };
 
-export type {
-  Viewport,
-  World,
-  InputVector,
-  Player,
-  WorldState,
-  PlayerSpriteProps,
-};
+export type { Viewport, World, InputVector, Player, WorldState };
