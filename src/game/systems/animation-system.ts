@@ -5,7 +5,9 @@ import { AnimationState } from "@/types/sprite-animation";
 import { INPUT_DEADZONE } from "@/constants/player";
 
 export const AnimationSystem: WorldSystem = (world, frameInfo) => {
-  const { input, player } = world;
+  const { input, entities } = world;
+  const { player, playerSprite } = entities;
+
   if (!player) {
     return;
   }
@@ -15,19 +17,19 @@ export const AnimationSystem: WorldSystem = (world, frameInfo) => {
   const isMoving = input.power > INPUT_DEADZONE;
   const nextState: AnimationState = isMoving ? "RUN" : "IDLE";
 
-  if (player.animation.state !== nextState) {
-    player.animation.state = nextState;
-    player.animation.frameIndex = 0;
-    player.animation.frameTimer = 0;
+  if (playerSprite.state !== nextState) {
+    playerSprite.state = nextState;
+    playerSprite.frameIndex = 0;
+    playerSprite.frameTimer = 0;
   }
 
   const frameRate = nextState === "IDLE" ? FRAME_RATE.IDLE : FRAME_RATE.RUN;
   const frameDelay = 1 / frameRate;
 
-  player.animation.frameTimer += dt;
-  if (player.animation.frameTimer >= frameDelay) {
-    player.animation.frameTimer -= frameDelay;
+  playerSprite.frameTimer += dt;
+  if (playerSprite.frameTimer >= frameDelay) {
+    playerSprite.frameTimer -= frameDelay;
     const frames = SPRITE.CLIPS[nextState].FRAMES;
-    player.animation.frameIndex = (player.animation.frameIndex + 1) % frames;
+    playerSprite.frameIndex = (playerSprite.frameIndex + 1) % frames;
   }
 };

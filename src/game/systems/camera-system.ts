@@ -5,7 +5,9 @@ const SMOOTH = 0.2;
 const DEADZONE = 0.5;
 
 export const CameraSystem: WorldSystem = (world, frameInfo) => {
-  const { player, view, world: bounds } = world;
+  const { entities, view, world: bounds } = world;
+  const player = entities.player;
+
   if (!player || !view) {
     return;
   }

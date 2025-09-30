@@ -7,7 +7,8 @@ export const LightSystem: WorldSystem<LightingWorldState> = (
   world,
   frameInfo,
 ) => {
-  const { view, player, light } = world;
+  const { view, entities, light } = world;
+  const player = entities.player;
 
   if (!world.lightFrame) {
     world.lightFrame = { worldCenterX: 0, worldCenterY: 0, currentRadius: 0 };

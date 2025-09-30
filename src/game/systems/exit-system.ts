@@ -3,7 +3,9 @@ import { useGameStore } from "@/store/use-game-store";
 import { isExitAtWorld } from "@/lib/map-collision";
 
 export const ExitSystem: WorldSystem = (world) => {
-  const { map, player } = world;
+  const { map, entities } = world;
+  const player = entities.player;
+
   if (!map || !player) {
     return;
   }
