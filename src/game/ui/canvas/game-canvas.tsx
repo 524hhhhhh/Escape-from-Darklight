@@ -18,8 +18,10 @@ import { useGameStore } from "@/store/use-game-store";
 import { DEFAULT_LIMIT } from "@/constants/time";
 import { LightingWorldState } from "@/types/light";
 import { WorldRenderLayer } from "@/game/ui/world/world-render-layer";
+import StatusHud from "@/game/ui/hud/status-hud";
+import { HazardSystem } from "@/game/systems/hazard-system";
 
-type Props = { isRunning?: boolean };
+type Props = { isRunning?: boolean; canControl?: boolean };
 
 const systems: WorldSystem<LightingWorldState>[] = [
   PhysicsSystem,
@@ -27,11 +29,15 @@ const systems: WorldSystem<LightingWorldState>[] = [
   ExitSystem,
   AnimationSystem,
   HintSystem,
+  HazardSystem,
   CameraSystem,
   LightSystem,
 ];
 
-export default function GameCanvas({ isRunning = false }: Props) {
+export default function GameCanvas({
+  isRunning = false,
+  canControl = true,
+}: Props) {
   const insets = useSafeAreaInsets();
   const joyStyle = { left: 20 + insets.left, bottom: insets.bottom + 20 };
 
@@ -78,16 +84,21 @@ export default function GameCanvas({ isRunning = false }: Props) {
         onLayout={handleLayout}
         renderOverlay={(world) => <WorldRenderLayer world={world} />}
       />
+
+      <StatusHud />
+
       <View style={styles.hud}>
-        <Joystick
-          onChange={(value) => {
-            const world = worldRef.current;
-            world.input.x = value.x;
-            world.input.y = value.y;
-            world.input.power = value.strength;
-          }}
-          style={[styles.joystick, joyStyle]}
-        />
+        {canControl && (
+          <Joystick
+            onChange={(value) => {
+              const world = worldRef.current;
+              world.input.x = value.x;
+              world.input.y = value.y;
+              world.input.power = value.strength;
+            }}
+            style={[styles.joystick, joyStyle]}
+          />
+        )}
       </View>
     </View>
   );

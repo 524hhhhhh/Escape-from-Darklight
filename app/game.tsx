@@ -6,7 +6,6 @@ import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
-import Timer from "@/game/ui/hud/timer";
 import { gameResult } from "@/lib/game-result";
 
 export default function GameScreen() {
@@ -18,15 +17,14 @@ export default function GameScreen() {
   const restartGame = useGameStore((state) => state.restartGame);
   const resetGame = useGameStore((state) => state.resetGame);
 
-  const isRunning = status.type === "playing";
+  const canControl = status.type === "playing";
+  const isRunning = status.type === "playing" || status.type === "death";
 
   const { visible, title, subTitle } = gameResult(status);
 
   return (
     <View style={styles.root}>
-      <GameCanvas key={runId} isRunning={isRunning} />
-
-      <Timer />
+      <GameCanvas key={runId} isRunning={isRunning} canControl={canControl} />
 
       <AppModal
         visible={visible}
