@@ -1,47 +1,38 @@
-import {
-  HEART_HP,
-  HEART_SPRITE_DEFAULTS,
-  HEART_STATE,
-  HEART_TEMPLATES,
-} from "@/constants/heart-hp";
-import type { HeartSpriteKey } from "@/types/heart-hp";
+import { HEART, HEART_STATE } from "@/constants/heart-hp";
+import { HeartClipKey } from "@/types/heart-hp";
 
-function getHeartSpriteInfo(key: HeartSpriteKey) {
-  const template = HEART_TEMPLATES[key];
-
-  let frameDuration: number;
-
-  if (template.durationMs != null) {
-    frameDuration = template.durationMs / template.frames / 1000;
-  } else {
-    frameDuration = 1 / (template.frameRate ?? HEART_SPRITE_DEFAULTS.frameRate);
-  }
+function getHeartSpriteInfo(key: HeartClipKey) {
+  const clip = HEART.SPRITE_SHEET.CLIPS[key];
+  const frameRate = clip.FRAME_RATE ?? 0;
 
   return {
-    src: template.src,
-    frameCount: template.frames,
-    loop: template.isLoop ?? false,
-    frameDuration,
+    src: HEART.SPRITE_SHEET.SOURCE,
+    cols: HEART.SPRITE_SHEET.COL_COUNT,
+    rows: HEART.SPRITE_SHEET.ROW_COUNT,
+
+    startIndex: clip.ROW_INDEX * HEART.SPRITE_SHEET.COL_COUNT + clip.START_COL,
+
+    frameCount: clip.FRAME_COUNT,
+    isLoop: !!clip.IS_LOOP,
+    frameDuration: frameRate > 0 ? 1 / frameRate : Number.POSITIVE_INFINITY,
   };
 }
 
-function getHeartState(hp: number, index: number): HeartSpriteKey {
-  const heartStartHp = index * HEART_HP;
+function getHeartState(hp: number, index: number): HeartClipKey {
+  const heartStartHp = index * HEART.UNIT;
   const heartFill = hp - heartStartHp;
 
-  if (heartFill >= HEART_HP) {
-    return "FULL_IDLE";
+  if (heartFill >= HEART.UNIT) {
+    return HEART_STATE.FULL_IDLE;
   }
-
-  if (heartFill === HEART_HP / 2) {
-    return "HALF_IDLE";
+  if (heartFill === HEART.UNIT / 2) {
+    return HEART_STATE.HALF_IDLE;
   }
-
-  return "EMPTY";
+  return HEART_STATE.EMPTY;
 }
 
-function buildHeartStates(hp: number, heartCount: number): HeartSpriteKey[] {
-  const result: HeartSpriteKey[] = new Array(heartCount);
+function buildHeartStates(hp: number, heartCount: number): HeartClipKey[] {
+  const result: HeartClipKey[] = new Array(heartCount);
   for (let i = 0; i < heartCount; i++) {
     result[i] = getHeartState(hp, i);
   }
@@ -49,9 +40,9 @@ function buildHeartStates(hp: number, heartCount: number): HeartSpriteKey[] {
 }
 
 function getHeartTransition(
-  prev: HeartSpriteKey,
-  next: HeartSpriteKey,
-): HeartSpriteKey {
+  prev: HeartClipKey,
+  next: HeartClipKey,
+): HeartClipKey {
   if (prev === HEART_STATE.FULL_IDLE && next === HEART_STATE.HALF_IDLE) {
     return HEART_STATE.FULL_TO_HALF;
   }
@@ -66,13 +57,13 @@ function getHeartTransition(
 function updateHeartStates(
   prevHp: number,
   currentHp: number,
-  prevHearts: HeartSpriteKey[],
-): HeartSpriteKey[] {
+  prevHearts: HeartClipKey[],
+): HeartClipKey[] {
   const updatedHearts = prevHearts.slice();
 
   if (prevHp > currentHp) {
     for (let hpStep = prevHp; hpStep > currentHp; hpStep--) {
-      const index = Math.floor((hpStep - 1) / HEART_HP);
+      const index = Math.floor((hpStep - 1) / HEART.UNIT);
       const prevHeartState = getHeartState(hpStep, index);
       const nextHeartState = getHeartState(hpStep - 1, index);
 
@@ -83,9 +74,4 @@ function updateHeartStates(
   return updatedHearts;
 }
 
-export {
-  getHeartSpriteInfo,
-  getHeartState,
-  buildHeartStates,
-  updateHeartStates,
-};
+export { getHeartSpriteInfo, buildHeartStates, updateHeartStates };
