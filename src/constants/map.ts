@@ -22,7 +22,7 @@ const HAZARDS_TEMPLATES: HazardTemplateMap = {
   },
   [TILE.SPIKE]: {
     kind: "spike",
-    damage: 3,
+    damage: 2,
     cooldown: 800,
     haptics: "Heavy",
   },
