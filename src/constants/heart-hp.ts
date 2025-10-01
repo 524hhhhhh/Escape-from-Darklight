@@ -1,15 +1,53 @@
-import type { HeartSpriteSpec } from "@/types/heart-hp";
-
-const HEART_HP = 2;
-const HEART_UI = {
-  SIZE: 44,
-  SPACING: 0,
-  OVERLAP: 12,
-};
-
-const HEART_SPRITE_DEFAULTS = {
-  frameRate: 10,
-  transitionDuration: 250,
+const HEART = {
+  FRAME_SIZE: 16,
+  UI: {
+    SIZE: 46,
+    SPACING: 0,
+    OVERLAP: 14,
+  },
+  UNIT: 2,
+  SPRITE_SHEET: {
+    SOURCE: require("@assets/hp/heart_hp.png"),
+    COL_COUNT: 6,
+    ROW_COUNT: 5,
+    CLIPS: {
+      FULL_IDLE: {
+        ROW_INDEX: 0,
+        START_COL: 0,
+        FRAME_COUNT: 6,
+        IS_LOOP: true,
+        FRAME_RATE: 10,
+      },
+      FULL_TO_HALF: {
+        ROW_INDEX: 1,
+        START_COL: 0,
+        FRAME_COUNT: 3,
+        IS_LOOP: false,
+        FRAME_RATE: 12,
+      },
+      HALF_IDLE: {
+        ROW_INDEX: 2,
+        START_COL: 0,
+        FRAME_COUNT: 6,
+        IS_LOOP: true,
+        FRAME_RATE: 10,
+      },
+      HALF_TO_EMPTY: {
+        ROW_INDEX: 3,
+        START_COL: 0,
+        FRAME_COUNT: 3,
+        IS_LOOP: false,
+        FRAME_RATE: 12,
+      },
+      EMPTY: {
+        ROW_INDEX: 4,
+        START_COL: 0,
+        FRAME_COUNT: 1,
+        IS_LOOP: false,
+        FRAME_RATE: 0,
+      },
+    } as const,
+  },
 } as const;
 
 const HEART_STATE = {
@@ -20,41 +58,4 @@ const HEART_STATE = {
   EMPTY: "EMPTY",
 } as const;
 
-const HEART_TEMPLATES: Record<string, HeartSpriteSpec> = {
-  FULL_IDLE: {
-    src: require("@assets/hp/heart_shine_full.png"),
-    frames: 6,
-    isLoop: true,
-  },
-  FULL_TO_HALF: {
-    src: require("@assets/hp/heart_blink_full.png"),
-    frames: 3,
-    isLoop: false,
-    durationMs: HEART_SPRITE_DEFAULTS.transitionDuration,
-  },
-  HALF_IDLE: {
-    src: require("@assets/hp/heart_shine_half.png"),
-    frames: 6,
-    isLoop: true,
-  },
-  HALF_TO_EMPTY: {
-    src: require("@assets/hp/heart_blink_half.png"),
-    frames: 3,
-    isLoop: false,
-    durationMs: HEART_SPRITE_DEFAULTS.transitionDuration,
-  },
-  EMPTY: {
-    src: require("@assets/hp/heart_empty.png"),
-    frames: 1,
-    isLoop: false,
-    frameRate: 0,
-  },
-} as const satisfies Record<string, HeartSpriteSpec>;
-
-export {
-  HEART_HP,
-  HEART_UI,
-  HEART_SPRITE_DEFAULTS,
-  HEART_STATE,
-  HEART_TEMPLATES,
-};
+export { HEART, HEART_STATE };

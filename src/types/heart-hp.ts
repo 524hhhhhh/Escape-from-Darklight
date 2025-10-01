@@ -1,14 +1,5 @@
-import { HEART_STATE } from "@/constants/heart-hp";
-import { ImageSourcePropType } from "react-native";
+import { HEART } from "@/constants/heart-hp";
 
-type HeartSpriteKey = (typeof HEART_STATE)[keyof typeof HEART_STATE];
+type HeartClipKey = keyof typeof HEART.SPRITE_SHEET.CLIPS;
 
-type HeartSpriteSpec = {
-  src: ImageSourcePropType;
-  frames: number;
-  isLoop?: boolean;
-  frameRate?: number;
-  durationMs?: number;
-};
-
-export type { HeartSpriteKey, HeartSpriteSpec };
+export type { HeartClipKey };
