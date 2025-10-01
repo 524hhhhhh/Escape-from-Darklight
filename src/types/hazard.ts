@@ -1,4 +1,4 @@
-type HazardKind = "electric" | "spike";
+type HazardKind = "poison" | "spike";
 
 type HazardTemplate = {
   kind: HazardKind;
