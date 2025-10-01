@@ -1,5 +1,5 @@
 import React from "react";
-import { SpriteSheet } from "@/game/ui/player/sprite-sheet";
+import { SpriteSheet } from "@/components/sprite-sheet/sprite-sheet";
 
 type Props = {
   x: number;

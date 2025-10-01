@@ -1,7 +1,7 @@
 import { SPRITE, isRightFacing, PLAYER } from "@/constants/player";
 import type { AnimationState, FacingDirection } from "@/types/sprite-animation";
 import React from "react";
-import { SpriteSheet } from "./sprite-sheet";
+import { SpriteSheet } from "@/components/sprite-sheet/sprite-sheet";
 
 type Props = {
   x: number;
