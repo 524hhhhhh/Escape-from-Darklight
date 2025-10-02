@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useRef } from "react";
 import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { WorldEngineLayer } from "@/game/ui/world/world-engine-layer";
+import { WorldEngineLayer } from "@/game/ui/world-layer/world-engine-layer";
 import { PhysicsSystem } from "@/game/systems/physics-system";
 import { CameraSystem } from "@/game/systems/camera-system";
 import { WorldClampSystem } from "@/game/systems/world-clamp-system";
@@ -17,7 +17,7 @@ import { LightSystem } from "@/game/systems/light-system";
 import { useGameStore } from "@/store/use-game-store";
 import { DEFAULT_LIMIT } from "@/constants/time";
 import { LightingWorldState } from "@/types/light";
-import { WorldRenderLayer } from "@/game/ui/world/world-render-layer";
+import { WorldRenderLayer } from "@/game/ui/world-layer/world-render-layer";
 import StatusHud from "@/game/ui/hud/status-hud";
 import { HazardSystem } from "@/game/systems/hazard-system";
 

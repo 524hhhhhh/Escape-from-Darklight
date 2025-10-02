@@ -1,6 +1,6 @@
 import { useJoystick } from "@/hooks/use-joystick";
 import React from "react";
-import JoystickView from "./joystick-view";
+import JoystickView from "../view/joystick-view";
 import type { StickVector } from "@/types/joystick";
 import { StyleProp, ViewStyle } from "react-native";
 
