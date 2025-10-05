@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import HeartSprite from "./heart-sprite";
+import HeartSprite from "../sprite/heart-sprite";
 import { HEART } from "@/constants/heart-hp";
 import { updateHeartStates, buildHeartStates } from "@/lib/heart-hp-state";
 import type { HeartClipKey } from "@/types/heart-hp";

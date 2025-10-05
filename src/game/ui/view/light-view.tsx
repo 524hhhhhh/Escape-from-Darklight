@@ -15,7 +15,7 @@ type Props = {
   zIndex?: number;
 };
 
-export default function LightOverlay({
+export default function LightView({
   width,
   height,
   screenCenterX,

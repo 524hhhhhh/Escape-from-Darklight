@@ -4,8 +4,8 @@ import type { Viewport } from "@/types/world-state";
 import type { WorldPosition } from "@/types/position";
 import { PLAYER } from "@/constants/player";
 import { HintController } from "@/game/systems/hint-system";
-import PlayerSprite from "@/game/ui/player/player-sprite";
-import EffectSprite from "@/game/ui/player/effect-sprite";
+import PlayerSprite from "@/game/ui/sprite/player-sprite";
+import HintSprite from "@/game/ui/sprite/hint-sprite";
 
 type PlayerRenderProps = {
   position: WorldPosition;
@@ -42,7 +42,7 @@ export default function PlayerRenderer({
       />
 
       {hintFrame !== null && (
-        <EffectSprite
+        <HintSprite
           x={screenX}
           y={screenY}
           frame={hintFrame}

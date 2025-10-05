@@ -11,7 +11,7 @@ type Props = {
   anchorY?: number;
 };
 
-export default function EffectSprite({
+export default function HintSprite({
   x,
   y,
   frame,
