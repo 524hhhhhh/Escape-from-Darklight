@@ -1,4 +1,5 @@
 import type { HazardTemplate } from "@/types/hazard";
+import { SwitchState, DoorState } from "@/types/trigger";
 
 type SolidRegistry = {
   has(tileX: number, tileY: number): boolean;
@@ -14,4 +15,10 @@ type HazardRegistry = {
   clear(): void;
 };
 
-export type { SolidRegistry, HazardRegistry };
+type TriggerRegistry = {
+  switches: Map<string, SwitchState>;
+  doors: Map<string, DoorState>;
+  clear(): void;
+};
+
+export type { SolidRegistry, HazardRegistry, TriggerRegistry };
