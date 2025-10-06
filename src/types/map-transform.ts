@@ -1,4 +1,5 @@
-import { TileGrid } from "@/lib/validator/map-schema";
+import { TileGrid } from "@/lib/validator/tile-schema";
+import { TriggerList } from "@/lib/validator/trigger-schema";
 import type {
   BaseSize,
   TilePosition,
@@ -22,7 +23,7 @@ type TransformMap = {
 
   solids: SolidRegistry;
   hazards: HazardRegistry;
-  triggers?: unknown[];
+  triggers: TriggerList;
 
   spawn: TransformSpawn;
   exits: { x: number; y: number }[];
