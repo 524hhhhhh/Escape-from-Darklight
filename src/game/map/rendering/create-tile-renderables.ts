@@ -37,7 +37,7 @@ export function createTileRenderables(
       return false;
     }
 
-    return map.solids.has(x, y);
+    return grid[y][x] === TILE.WALL;
   };
 
   const groundItems: TileRenderable[] = [];

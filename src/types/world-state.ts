@@ -1,6 +1,7 @@
 import type { TransformMap } from "@/types/map-transform";
 import type { Player } from "@/types/player";
 import type { PlayerSprite } from "@/types/sprite-animation";
+import type { TriggerRegistry } from "@/types/registry";
 
 type Viewport = {
   offsetX: number;
@@ -10,7 +11,7 @@ type Viewport = {
   height?: number;
 };
 
-type World = {
+type WorldSize = {
   width: number;
   height: number;
 };
@@ -28,11 +29,12 @@ type Entities = {
 
 type WorldState = {
   view: Viewport;
-  world: World;
+  world: WorldSize;
   input: InputVector;
   entities: Entities;
-  map?: TransformMap;
+  map: TransformMap;
+  triggers: TriggerRegistry;
   dt: number;
 };
 
-export type { Viewport, World, InputVector, Player, WorldState };
+export type { Viewport, WorldSize, InputVector, Player, WorldState };
