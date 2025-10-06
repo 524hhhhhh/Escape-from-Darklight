@@ -1,7 +1,12 @@
+import { TriggerList } from "@/lib/validator/trigger-schema";
 import { HazardTemplateMap } from "@/types/hazard";
-import type { HazardRegistry, SolidRegistry } from "@/types/registry";
+import type {
+  HazardRegistry,
+  SolidRegistry,
+  TriggerRegistry,
+} from "@/types/registry";
 
-function buildCollisionIndex(
+function buildSolidIndex(
   grid: number[][],
   index: SolidRegistry,
   targetTile: number,
@@ -36,4 +41,36 @@ function buildHazardIndex(
   }
 }
 
-export { buildCollisionIndex, buildHazardIndex };
+function buildTriggerIndex(
+  triggers: TriggerList,
+  runtime: TriggerRegistry,
+): void {
+  runtime.clear();
+
+  for (const trigger of triggers) {
+    if (trigger.type === "door") {
+      runtime.doors.set(trigger.id, {
+        id: trigger.id,
+        type: trigger.type,
+        tileX: trigger.tileX,
+        tileY: trigger.tileY,
+        isOpen: false,
+        sprite: { frameIndex: 0, frameTimer: 0 },
+        hasPlayedOpenAnim: false,
+      });
+    } else if (trigger.type === "switch") {
+      runtime.switches.set(trigger.id, {
+        id: trigger.id,
+        type: trigger.type,
+        tileX: trigger.tileX,
+        tileY: trigger.tileY,
+        linkedDoors: trigger.linkedDoors,
+        progressMs: 0,
+        isActivated: false,
+        sprite: { frameIndex: 0, frameTimer: 0 },
+      });
+    }
+  }
+}
+
+export { buildSolidIndex, buildHazardIndex, buildTriggerIndex };
