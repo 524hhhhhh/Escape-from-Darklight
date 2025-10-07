@@ -2,23 +2,26 @@ import type { TransformMap, TransformSpawn } from "@/types/map-transform";
 import { MapJson } from "@/lib/validator/map-schema";
 import { transformWorldEntity } from "@/lib/transform-world-entity";
 import {
-  buildCollisionIndex,
+  buildSolidIndex,
   buildHazardIndex,
 } from "@/game/map/collision/build-tile-index";
 import {
   createHazardRegistry,
   createSolidRegistry,
-} from "@/game/map/collision/create-collision-registries";
+} from "@/game/map/collision/create-registries";
 import { HAZARDS_TEMPLATES, TILE, TILE_SIZE } from "@/constants/map";
 
 export function transformMap(src: MapJson): TransformMap {
-  const { meta, grid, spawn } = src;
+  const { meta, grid, spawn, triggers } = src;
   const tileSize = TILE_SIZE.RENDER;
+
+  const height = grid.length;
+  const width = grid[0]?.length ?? 0;
 
   const transformSpawn: TransformSpawn = transformWorldEntity(spawn, tileSize);
 
   const solids = createSolidRegistry();
-  buildCollisionIndex(grid, solids, TILE.WALL);
+  buildSolidIndex(grid, solids, TILE.WALL);
 
   const hazards = createHazardRegistry();
   buildHazardIndex(grid, hazards, HAZARDS_TEMPLATES);
@@ -35,19 +38,26 @@ export function transformMap(src: MapJson): TransformMap {
     }
   }
 
+  for (const trigger of triggers) {
+    if (trigger.type === "door") {
+      solids.add(trigger.tileX, trigger.tileY);
+    }
+  }
+
   return {
     grid,
     tileSize,
     meta: {
-      width: meta.width,
-      height: meta.height,
+      width,
+      height,
       tileRenderSize: TILE_SIZE.RENDER,
       tileCollisionSize: TILE_SIZE.COLLISION,
       version: meta.version,
     },
     solids,
-    triggers: [],
     hazards,
+    triggers,
+
     spawn: transformSpawn,
     exits,
   };

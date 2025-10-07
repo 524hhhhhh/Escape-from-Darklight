@@ -4,6 +4,10 @@ import { TileView } from "@/game/ui/view/tile-view";
 import { createTileRenderables } from "@/game/map/rendering/create-tile-renderables";
 import PlayerRenderer from "@/game/ui/view/player-view";
 import LightView from "@/game/ui/view/light-view";
+import {
+  TriggerDoorView,
+  TriggerGroundView,
+} from "@/game/ui/view/trigger-view";
 
 type Props = { world: LightingWorldState };
 
@@ -30,6 +34,18 @@ export function WorldRenderLayer({ world }: Props) {
     <>
       <TileView items={items} />
 
+      <TriggerGroundView world={world} />
+
+      <PlayerRenderer
+        position={world.entities.player.position}
+        facing={world.entities.player.facing}
+        view={world.view}
+        state={world.entities.playerSprite.state}
+        frame={world.entities.playerSprite.frameIndex}
+      />
+
+      <TriggerDoorView world={world} />
+
       {lightFrame && screenRadius > 0 && (
         <LightView
           width={viewW}
@@ -40,14 +56,6 @@ export function WorldRenderLayer({ world }: Props) {
           zIndex={2}
         />
       )}
-
-      <PlayerRenderer
-        position={world.entities.player.position}
-        facing={world.entities.player.facing}
-        view={world.view}
-        state={world.entities.playerSprite.state}
-        frame={world.entities.playerSprite.frameIndex}
-      />
     </>
   );
 }

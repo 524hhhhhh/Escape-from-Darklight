@@ -1,32 +1,38 @@
 import { createPlayer } from "@/game/entities/create-player";
-import type { Viewport, World } from "@/types/world-state";
+import type { Viewport, WorldSize } from "@/types/world-state";
 import type { FacingDirection, PlayerSprite } from "@/types/sprite-animation";
 import { loadMap } from "@/game/map/load-map";
-import type { WorldPosition } from "@/types/position";
-import {
-  determinePlayerStart,
-  determineWorldSize,
-} from "@/lib/determine-world-from-map";
 import { HintController } from "@/game/systems/hint-system";
 import type { LightingWorldState } from "@/types/light";
+import { createTriggerRegistry } from "@/game/map/collision/create-registries";
+import { buildTriggerIndex } from "@/game/map/collision/build-tile-index";
 
 type CreateOptions = {
-  mapJson?: unknown;
-  world?: World;
+  mapJson: unknown;
   zoom?: number;
-  playerStart?: WorldPosition & { facing: FacingDirection };
 };
 
 export function createWorldState({
   mapJson,
-  world = { width: 2000, height: 1200 },
   zoom = 2,
-  playerStart = { worldX: 240, worldY: 160, facing: "N" as FacingDirection },
-}: CreateOptions = {}): LightingWorldState & { version: number } {
-  const loadedMap = mapJson ? loadMap(mapJson) : undefined;
+}: CreateOptions): LightingWorldState & { version: number } {
+  const loadedMap = loadMap(mapJson);
 
-  const worldSizePx: World = determineWorldSize(loadedMap, world);
-  const start = determinePlayerStart(loadedMap, playerStart);
+  const triggers = createTriggerRegistry();
+  if (loadedMap.triggers.length) {
+    buildTriggerIndex(loadedMap.triggers, triggers);
+  }
+
+  const worldSizePx: WorldSize = {
+    width: loadedMap.grid[0].length * loadedMap.tileSize,
+    height: loadedMap.grid.length * loadedMap.tileSize,
+  };
+
+  const start = {
+    worldX: loadedMap.spawn.centerX,
+    worldY: loadedMap.spawn.centerY,
+    facing: "N" as FacingDirection,
+  };
 
   const view: Viewport = { offsetX: 0, offsetY: 0, zoom, width: 0, height: 0 };
   const player = createPlayer(start);
@@ -40,19 +46,15 @@ export function createWorldState({
     view,
     world: worldSizePx,
     input: { x: 0, y: 0, power: 0 },
-    entities: {
-      player,
-      playerSprite,
-    },
-    light: {
-      lightLife: 1,
-    },
+    entities: { player, playerSprite },
+    light: { lightLife: 1 },
     lightFrame: {
       worldCenterX: start.worldX,
       worldCenterY: start.worldY,
       currentRadius: 0,
     },
     map: loadedMap,
+    triggers,
     dt: 0,
     version: 0,
   };

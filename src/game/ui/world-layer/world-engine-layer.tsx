@@ -2,40 +2,36 @@ import React, { useEffect } from "react";
 import { LayoutChangeEvent, StyleProp, View, ViewStyle } from "react-native";
 import { useGameLoop } from "@/hooks/use-game-loop";
 import type { WorldSystem } from "@/types/world-engine";
-import { WorldState } from "@/types/world-state";
+import type { LightingWorldState } from "@/types/light";
 
-type Props<T extends WorldState> = {
-  systems?: WorldSystem<T>[];
-  worldMap: T;
+type Props = {
+  systems?: WorldSystem<LightingWorldState>[];
+  world: LightingWorldState;
   isRunning?: boolean;
   style?: StyleProp<ViewStyle>;
   onLayout?: (e: LayoutChangeEvent) => void;
-  renderOverlay?: (world: T) => React.ReactNode;
+  renderOverlay?: (world: LightingWorldState) => React.ReactNode;
 };
 
-export function WorldEngineLayer<T extends WorldState>({
+export function WorldEngineLayer({
   systems = [],
-  worldMap,
+  world,
   isRunning = false,
   style,
   onLayout,
   renderOverlay,
-}: Props<T>) {
-  const loop = useGameLoop<T>(worldMap, systems);
+}: Props) {
+  const loop = useGameLoop(world, systems);
 
   useEffect(() => {
-    if (isRunning) {
-      loop.start();
-    } else {
-      loop.stop();
-    }
+    isRunning ? loop.start() : loop.stop();
   }, [isRunning, loop]);
 
-  const world = loop.getWorld();
+  const currentWorld = loop.getWorld();
 
   return (
     <View style={style} onLayout={onLayout}>
-      {renderOverlay?.(world)}
+      {renderOverlay?.(currentWorld)}
     </View>
   );
 }

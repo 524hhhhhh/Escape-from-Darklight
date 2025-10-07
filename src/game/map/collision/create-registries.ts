@@ -1,5 +1,10 @@
 import { HazardTemplate } from "@/types/hazard";
-import type { HazardRegistry, SolidRegistry } from "@/types/registry";
+import type {
+  HazardRegistry,
+  SolidRegistry,
+  TriggerRegistry,
+} from "@/types/registry";
+import { DoorState, SwitchState } from "@/types/trigger";
 
 const key = (x: number, y: number) => `${x},${y}`;
 
@@ -35,4 +40,18 @@ function createHazardRegistry(): HazardRegistry {
   };
 }
 
-export { createSolidRegistry, createHazardRegistry };
+function createTriggerRegistry(): TriggerRegistry {
+  const doors = new Map<string, DoorState>();
+  const switches = new Map<string, SwitchState>();
+
+  return {
+    doors,
+    switches,
+    clear: () => {
+      doors.clear();
+      switches.clear();
+    },
+  };
+}
+
+export { createSolidRegistry, createHazardRegistry, createTriggerRegistry };

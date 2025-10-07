@@ -1,35 +1,33 @@
 import { z } from "zod";
-import { TILE } from "@/constants/map";
+import { TileGridSchema } from "@/lib/validator/tile-schema";
+import { TriggerSchema } from "@/lib/validator/trigger-schema";
+import { createGridGuard } from "@/lib/validator/helper/create-grid-guard";
+import validatePosition from "@/lib/validator/rules/validate-position";
+import validateLinks from "@/lib/validator/rules/validate-links";
+import validateDuplicates from "@/lib/validator/rules/validate-duplicates";
 
-export const TileCodeSchema = z.union([
-  z.literal(TILE.ROAD),
-  z.literal(TILE.WALL),
-  z.literal(TILE.EXIT),
-  z.literal(TILE.POISON),
-  z.literal(TILE.SPIKE),
-]);
-
-export const TileGridSchema = z.array(z.array(TileCodeSchema));
-
-export type TileCode = z.infer<typeof TileCodeSchema>;
-export type TileGrid = z.infer<typeof TileGridSchema>;
-
-export const MapJsonSchema = z.object({
-  meta: z.object({
-    version: z.string(),
-    width: z.number(),
-    height: z.number(),
-
-    generator: z.object({
-      name: z.string(),
-      seed: z.number().nullable(),
-      params: z.record(z.unknown()),
+export const MapJsonSchema = z
+  .object({
+    meta: z.object({
+      version: z.string(),
+      generator: z.object({
+        name: z.string(),
+        seed: z.number().nullable(),
+        params: z.record(z.unknown()),
+      }),
     }),
-  }),
 
-  grid: TileGridSchema,
-  spawn: z.object({ tileX: z.number(), tileY: z.number() }),
-  objects: z.array(z.unknown()),
-});
+    grid: TileGridSchema,
+    spawn: z.object({ tileX: z.number().int(), tileY: z.number().int() }),
+    triggers: TriggerSchema.default([]),
+  })
+  .superRefine((mapJson, ctx) => {
+    const { grid, spawn, triggers } = mapJson;
+    const isInsideGrid = createGridGuard(grid);
+
+    validatePosition(grid, spawn, triggers, isInsideGrid, ctx);
+    validateLinks(triggers, ctx);
+    validateDuplicates(triggers, ctx);
+  });
 
 export type MapJson = z.infer<typeof MapJsonSchema>;

@@ -20,6 +20,7 @@ import { LightingWorldState } from "@/types/light";
 import { WorldRenderLayer } from "@/game/ui/world-layer/world-render-layer";
 import StatusHud from "@/game/ui/hud/status-hud";
 import { HazardSystem } from "@/game/systems/hazard-system";
+import { TriggerSystem } from "@/game/systems/trigger-system";
 
 type Props = { isRunning?: boolean; canControl?: boolean };
 
@@ -30,6 +31,7 @@ const systems: WorldSystem<LightingWorldState>[] = [
   AnimationSystem,
   HintSystem,
   HazardSystem,
+  TriggerSystem,
   CameraSystem,
   LightSystem,
 ];
@@ -76,10 +78,10 @@ export default function GameCanvas({
 
   return (
     <View style={styles.root}>
-      <WorldEngineLayer<LightingWorldState>
+      <WorldEngineLayer
         isRunning={isRunning}
         style={styles.canvas}
-        worldMap={worldRef.current}
+        world={worldRef.current}
         systems={systems}
         onLayout={handleLayout}
         renderOverlay={(world) => <WorldRenderLayer world={world} />}

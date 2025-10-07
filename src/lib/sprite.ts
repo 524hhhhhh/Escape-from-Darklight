@@ -1,5 +1,10 @@
 import { FRAME_RATE, SPRITE } from "@/constants/player";
-import { AnimationState, PlayerSprite } from "@/types/sprite-animation";
+import type {
+  AnimationState,
+  FrameSprite,
+  PlayerSprite,
+} from "@/types/sprite-animation";
+import { clampToRatio } from "@/utils/math";
 
 function sliceFrame(frame: number, cols: number) {
   const col = frame % cols;
@@ -54,8 +59,8 @@ function setSpriteState(sprite: PlayerSprite, next: AnimationState) {
 }
 
 function tickSpriteFrame(
-  sprite: PlayerSprite,
-  frames: number,
+  sprite: FrameSprite,
+  totalFrames: number,
   frameDelay: number,
   dt: number,
   loop: boolean,
@@ -67,10 +72,33 @@ function tickSpriteFrame(
 
   sprite.frameTimer -= frameDelay;
   if (loop) {
-    sprite.frameIndex = (sprite.frameIndex + 1) % frames;
+    sprite.frameIndex = (sprite.frameIndex + 1) % totalFrames;
   } else {
-    sprite.frameIndex = Math.min(sprite.frameIndex + 1, frames - 1);
+    sprite.frameIndex = Math.min(sprite.frameIndex + 1, totalFrames - 1);
   }
+}
+
+function progressMsToFrame(
+  progressMs: number,
+  holdMs: number,
+  frames: number,
+  isActivated: boolean,
+): number {
+  const totalFrames = Math.max(1, frames);
+  if (totalFrames === 1) {
+    return 0;
+  }
+
+  const ratio = clampToRatio(progressMs / Math.max(1, holdMs));
+
+  if (isActivated) {
+    return totalFrames - 1;
+  }
+
+  const progressFrames = totalFrames - 1;
+  const frameIndex = Math.floor(ratio * progressFrames);
+
+  return Math.min(frameIndex, progressFrames - 1);
 }
 
 export {
@@ -80,4 +108,5 @@ export {
   getMovementState,
   setSpriteState,
   tickSpriteFrame,
+  progressMsToFrame,
 };
