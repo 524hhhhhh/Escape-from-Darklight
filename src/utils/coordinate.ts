@@ -1,3 +1,5 @@
+import { WorldState } from "@/types/world-state";
+
 function tileToWorld(tileX: number, tileY: number, tileSize: number) {
   return { worldX: tileX * tileSize, worldY: tileY * tileSize };
 }
@@ -22,4 +24,18 @@ function tileCenterToWorld(tileX: number, tileY: number, tileSize: number) {
   };
 }
 
-export { tileToWorld, worldToTile, tileCenterToWorld };
+function worldToScreen(
+  worldX: number,
+  worldY: number,
+  view: WorldState["view"],
+  tileSize: number,
+) {
+  const zoom = view.zoom ?? 1;
+  return {
+    screenX: (worldX - view.offsetX) * zoom,
+    screenY: (worldY - view.offsetY) * zoom,
+    tileRenderSize: tileSize * zoom,
+  };
+}
+
+export { tileToWorld, worldToTile, tileCenterToWorld, worldToScreen };
