@@ -10,15 +10,14 @@ type SwitchState = TriggerBase & {
   type: "switch";
   linkedDoors: string[];
   progressMs: number;
-  isActivated: boolean;
+  isCompleted: boolean;
   sprite: FrameSprite;
 };
 
 type DoorState = TriggerBase & {
   type: "door";
-  isOpen: boolean;
+  openState: "closed" | "opening" | "opened";
   sprite: FrameSprite;
-  hasPlayedOpenAnim?: boolean;
 };
 
 export type { SwitchState, DoorState };

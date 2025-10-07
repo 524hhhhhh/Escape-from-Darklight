@@ -54,9 +54,8 @@ function buildTriggerIndex(
         type: trigger.type,
         tileX: trigger.tileX,
         tileY: trigger.tileY,
-        isOpen: false,
         sprite: { frameIndex: 0, frameTimer: 0 },
-        hasPlayedOpenAnim: false,
+        openState: "closed",
       });
     } else if (trigger.type === "switch") {
       runtime.switches.set(trigger.id, {
@@ -66,7 +65,7 @@ function buildTriggerIndex(
         tileY: trigger.tileY,
         linkedDoors: trigger.linkedDoors,
         progressMs: 0,
-        isActivated: false,
+        isCompleted: false,
         sprite: { frameIndex: 0, frameTimer: 0 },
       });
     }
