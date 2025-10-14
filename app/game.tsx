@@ -1,12 +1,17 @@
+import { useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useGameStore } from "@/store/use-game-store";
+import { useChapterStore } from "@/store/use-chapter-store";
+import { useStageStore } from "@/store/use-stage-store";
 import AppModal from "@/components/modals/app-modal";
-import GameCanvas from "@/game/ui/canvas/game-canvas";
+import GameCanvas from "@/screens/game/game-canvas";
 import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "App";
 import { gameResult } from "@/lib/game-result";
+import { MAP_BY_STAGE, type StageId } from "@/constants/stage-meta";
+import { getNextStageId } from "@/lib/stage-progress";
 
 export default function GameScreen() {
   const navigation =
@@ -17,10 +22,55 @@ export default function GameScreen() {
   const restartGame = useGameStore((state) => state.restartGame);
   const resetGame = useGameStore((state) => state.resetGame);
 
+  const selectedChapterId = useChapterStore((state) => state.selectedChapterId);
+
+  const selectedStageId = useStageStore((state) => state.selectedStageId);
+  const markCleared = useStageStore((state) => state.markCleared);
+  const selectStage = useStageStore((state) => state.selectStage);
+
   const canControl = status.type === "playing";
   const isRunning = status.type === "playing" || status.type === "death";
 
   const { visible, title, subTitle } = gameResult(status);
+
+  const hasMarkedClearRef = useRef(false);
+
+  useEffect(() => {
+    if (status.type === "cleared") {
+      if (!hasMarkedClearRef.current && selectedStageId) {
+        markCleared(selectedStageId);
+        hasMarkedClearRef.current = true;
+      }
+    } else {
+      hasMarkedClearRef.current = false;
+    }
+  }, [status.type, selectedStageId, markCleared]);
+
+  const nextStageId: StageId | null =
+    selectedChapterId && selectedStageId
+      ? getNextStageId(selectedChapterId, selectedStageId)
+      : null;
+
+  const isLastStage = !nextStageId;
+
+  const handleNextStage = () => {
+    if (!nextStageId) {
+      return;
+    }
+    selectStage(nextStageId);
+
+    const nextMap = MAP_BY_STAGE[nextStageId];
+    restartGame(nextMap);
+  };
+
+  const getResultAction = () => {
+    if (status.type !== "cleared" || isLastStage) {
+      return { title: "다시하기", onPress: () => restartGame() };
+    }
+    return { title: "다음으로 이동", onPress: handleNextStage };
+  };
+
+  const handleAction = getResultAction();
 
   return (
     <View style={styles.root}>
@@ -30,11 +80,11 @@ export default function GameScreen() {
         visible={visible}
         title={title}
         subTitle={subTitle}
-        primaryAction={{ title: "다시하기", onPress: restartGame }}
+        primaryAction={handleAction}
         secondaryAction={{
-          title: "메인으로 돌아가기",
+          title: "스테이지 목록으로 이동",
           onPress: () => {
-            navigation.replace("Home");
+            navigation.replace("StageDetail");
             resetGame();
           },
         }}
