@@ -1,4 +1,3 @@
-import React from "react";
 import type { LightingWorldState } from "@/types/light";
 import { TileView } from "@/game/ui/view/tile-view";
 import { createTileRenderables } from "@/game/map/rendering/create-tile-renderables";
