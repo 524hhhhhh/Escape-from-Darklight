@@ -1,40 +1,18 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { WorldEngineLayer } from "@/game/ui/world-layer/world-engine-layer";
-import { PhysicsSystem } from "@/game/systems/physics-system";
-import { CameraSystem } from "@/game/systems/camera-system";
-import { WorldClampSystem } from "@/game/systems/world-clamp-system";
 import Joystick from "@/game/ui/controls/joystick";
-import type { WorldSystem } from "@/types/world-engine";
-import sampleMap from "@assets/map/map.json";
 import { createWorldState } from "@/game/world/create-world-state";
-import { ExitSystem } from "@/game/systems/exit-system";
-import { AnimationSystem } from "@/game/systems/animation-system";
-import { HintSystem } from "@/game/systems/hint-system";
 import { stopHapticLoop } from "@/game/hint/hint-haptics";
-import { LightSystem } from "@/game/systems/light-system";
 import { useGameStore } from "@/store/use-game-store";
 import { DEFAULT_LIMIT } from "@/constants/time";
 import { LightingWorldState } from "@/types/light";
 import { WorldRenderLayer } from "@/game/ui/world-layer/world-render-layer";
 import StatusHud from "@/game/ui/hud/status-hud";
-import { HazardSystem } from "@/game/systems/hazard-system";
-import { TriggerSystem } from "@/game/systems/trigger-system";
+import { systems } from "@/game/systems";
 
 type Props = { isRunning?: boolean; canControl?: boolean };
-
-const systems: WorldSystem<LightingWorldState>[] = [
-  PhysicsSystem,
-  WorldClampSystem,
-  ExitSystem,
-  AnimationSystem,
-  HintSystem,
-  HazardSystem,
-  TriggerSystem,
-  CameraSystem,
-  LightSystem,
-];
 
 export default function GameCanvas({
   isRunning = false,
@@ -43,15 +21,20 @@ export default function GameCanvas({
   const insets = useSafeAreaInsets();
   const joyStyle = { left: 20 + insets.left, bottom: insets.bottom + 20 };
 
-  const initialWorld = useMemo(
-    () => createWorldState({ mapJson: sampleMap }),
-    [],
-  );
-  const worldRef = useRef<LightingWorldState>(initialWorld);
-
+  const currentMap = useGameStore((state) => state.currentMapJson);
   const countdown = useGameStore((state) =>
     state.status.type === "playing" ? state.status.time : null,
   );
+
+  const worldRef = useRef<LightingWorldState | null>(null);
+
+  useEffect(() => {
+    if (currentMap) {
+      worldRef.current = createWorldState({ mapJson: currentMap });
+    } else {
+      worldRef.current = null;
+    }
+  }, [currentMap]);
 
   useEffect(() => {
     if (countdown == null) {
@@ -59,6 +42,11 @@ export default function GameCanvas({
     }
 
     const worldState = worldRef.current;
+
+    if (!worldState) {
+      return;
+    }
+
     const life = Math.max(0, Math.min(1, countdown / DEFAULT_LIMIT));
     worldState.light.lightLife = life;
   }, [countdown]);
@@ -67,10 +55,24 @@ export default function GameCanvas({
     if (!isRunning) {
       stopHapticLoop();
     }
+
+    return () => stopHapticLoop();
   }, [isRunning]);
+
+  if (currentMap && !worldRef.current) {
+    worldRef.current = createWorldState({ mapJson: currentMap });
+  }
+
+  if (!currentMap || !worldRef.current) {
+    return <View />;
+  }
 
   const handleLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
+    if (!worldRef.current) {
+      return;
+    }
+
     const view = worldRef.current.view;
     view.width = width;
     view.height = height;
@@ -94,6 +96,10 @@ export default function GameCanvas({
           <Joystick
             onChange={(value) => {
               const world = worldRef.current;
+              if (!world) {
+                return;
+              }
+
               world.input.x = value.x;
               world.input.y = value.y;
               world.input.power = value.strength;
