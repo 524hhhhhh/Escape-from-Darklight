@@ -2,14 +2,16 @@ import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "app/index";
-import StageScreen from "app/stage";
+import ChapterScreen from "app/chapter";
+import StageDetailScreen from "app/stage-detail";
 import GameScreen from "app/game";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 export type RootStackParamList = {
   Home: undefined;
-  Stage: undefined;
+  Chapter: undefined;
+  StageDetail: undefined;
   Game: undefined;
 };
 
@@ -38,7 +40,8 @@ export default function App() {
         screenOptions={{ headerShown: false, animation: "none" }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Stage" component={StageScreen} />
+        <Stack.Screen name="Chapter" component={ChapterScreen} />
+        <Stack.Screen name="StageDetail" component={StageDetailScreen} />
         <Stack.Screen name="Game" component={GameScreen} />
       </Stack.Navigator>
     </NavigationContainer>
