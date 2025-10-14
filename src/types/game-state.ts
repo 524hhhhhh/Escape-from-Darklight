@@ -1,3 +1,5 @@
+import { MapJson } from "@/lib/validator/map-schema";
+
 type GameOverReason = "timeout" | "hp";
 
 type GameStatus =
@@ -13,11 +15,13 @@ type GameState = {
   hp: number;
   maxHp: number;
 
+  currentMapJson: MapJson | undefined;
+
   enterDeath: (reason: GameOverReason) => void;
   applyDamage: (amount: number) => void;
   resetHp: () => void;
 
-  restartGame: () => void;
+  restartGame: (mapJson?: MapJson) => void;
   resetGame: () => void;
   clearGame: () => void;
   gameOver: (reason: GameOverReason) => void;

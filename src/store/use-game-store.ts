@@ -9,6 +9,7 @@ export const useGameStore = create<GameState>((set, get) => ({
 
   hp: PLAYER.MAX_HP,
   maxHp: PLAYER.MAX_HP,
+  currentMapJson: undefined,
 
   enterDeath: (reason: GameOverReason) =>
     set(() => ({ status: { type: "death", reason } })),
@@ -29,11 +30,12 @@ export const useGameStore = create<GameState>((set, get) => ({
     set({ hp: maxHp });
   },
 
-  restartGame: () =>
+  restartGame: (mapJson) =>
     set((state) => ({
       runId: state.runId + 1,
       status: { type: "playing", time: DEFAULT_LIMIT },
       hp: state.maxHp,
+      currentMapJson: mapJson ?? state.currentMapJson,
     })),
 
   resetGame: () =>
@@ -41,6 +43,7 @@ export const useGameStore = create<GameState>((set, get) => ({
       runId: 0,
       status: { type: "start" },
       hp: state.maxHp,
+      currentMapJson: undefined,
     })),
 
   clearGame: () =>
