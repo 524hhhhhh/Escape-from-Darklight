@@ -1,7 +1,7 @@
 {
   "meta": {
     "version": "1.0",
-    "generator": { "name": "manual", "seed": null, "params": {} }
+    "generator": { "name": "chapter-1-stage-1" }
   },
   "grid": [
     [
@@ -9,7 +9,7 @@
       1, 1, 1, 1, 1
     ],
     [
-      1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+      1, 0, 0, 0, 1, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0,
       0, 0, 0, 0, 1
     ],
     [
@@ -66,32 +66,5 @@
     ]
   ],
   "spawn": { "tileX": 1, "tileY": 1 },
-  "triggers": [
-    {
-      "type": "switch",
-      "id": "switch_A",
-      "tileX": 3,
-      "tileY": 1,
-      "linkedDoors": ["door_A"]
-    },
-    {
-      "type": "door",
-      "id": "door_A",
-      "tileX": 5,
-      "tileY": 1
-    },
-    {
-      "type": "switch",
-      "id": "switch_B",
-      "tileX": 1,
-      "tileY": 2,
-      "linkedDoors": ["door_B"]
-    },
-    {
-      "type": "door",
-      "id": "door_B",
-      "tileX": 1,
-      "tileY": 3
-    }
-  ]
+  "triggers": []
 }

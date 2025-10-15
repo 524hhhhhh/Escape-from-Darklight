@@ -12,8 +12,6 @@ export const MapJsonSchema = z
       version: z.string(),
       generator: z.object({
         name: z.string(),
-        seed: z.number().nullable(),
-        params: z.record(z.unknown()),
       }),
     }),
 

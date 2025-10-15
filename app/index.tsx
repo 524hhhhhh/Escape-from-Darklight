@@ -10,7 +10,10 @@ export default function HomeScreen() {
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   return (
-    <Pressable style={styles.root} onPress={() => navigation.replace("Stage")}>
+    <Pressable
+      style={styles.root}
+      onPress={() => navigation.replace("Chapter")}
+    >
       <View style={styles.logoBox}>
         <AppText variant="TITLE_XL" style={styles.logoText}>
           로고

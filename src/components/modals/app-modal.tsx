@@ -45,19 +45,19 @@ export default function AppModal({
             {title}
           </AppText>
           {subTitle ? (
-            <AppText variant="TITLE_R" style={modalStyles.subTitle}>
+            <AppText variant="TITLE_M" style={modalStyles.subTitle}>
               {subTitle}
             </AppText>
           ) : null}
 
           <View style={modalStyles.actions}>
             <Button
-              variant="TITLE_M"
+              variant="TITLE_R"
               title={primaryAction.title}
               onPress={primaryAction.onPress}
             />
             <Button
-              variant="TITLE_M"
+              variant="TITLE_R"
               title={secondaryAction.title}
               onPress={secondaryAction.onPress}
             />

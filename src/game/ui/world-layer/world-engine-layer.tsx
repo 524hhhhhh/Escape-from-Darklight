@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { LayoutChangeEvent, StyleProp, View, ViewStyle } from "react-native";
 import { useGameLoop } from "@/hooks/use-game-loop";
 import type { WorldSystem } from "@/types/world-engine";
 import type { LightingWorldState } from "@/types/light";
 
 type Props = {
-  systems?: WorldSystem<LightingWorldState>[];
+  systems?: readonly WorldSystem<LightingWorldState>[];
   world: LightingWorldState;
   isRunning?: boolean;
   style?: StyleProp<ViewStyle>;
@@ -21,7 +21,7 @@ export function WorldEngineLayer({
   onLayout,
   renderOverlay,
 }: Props) {
-  const loop = useGameLoop(world, systems);
+  const loop = useGameLoop(world, [...systems]);
 
   useEffect(() => {
     isRunning ? loop.start() : loop.stop();
