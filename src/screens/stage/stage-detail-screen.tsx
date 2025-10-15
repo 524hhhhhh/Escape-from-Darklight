@@ -3,7 +3,7 @@ import { ImageBackground, StyleSheet, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
+import type { AppRoutes } from "@/types/navigation";
 import { useChapterStore } from "@/store/use-chapter-store";
 import { useStageStore } from "@/store/use-stage-store";
 import {
@@ -12,14 +12,14 @@ import {
   STAGES_BY_CHAPTER,
   type StageId,
 } from "@/constants/stage-meta";
-import StageDetailHeader from "@/screens/stage/stage-header";
-import StageGrid from "@/screens/stage/stage-grid";
+import StageDetailHeader from "@/screens/stage/ui/stage-header";
+import StageGrid from "./ui/stage-grid";
 import AppToast from "@/components/toast/app-toast";
 import { useGameStore } from "@/store/use-game-store";
+import { showLoadingWhile } from "@/lib/show-loading-while";
 
 export default function StageDetailScreen() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
 
   const restartGame = useGameStore((state) => state.restartGame);
 
@@ -44,15 +44,17 @@ export default function StageDetailScreen() {
     ? (STAGES_BY_CHAPTER[selectedChapterId] ?? [])
     : [];
 
-  const handlePressStage = (stageId: StageId) => {
+  const handlePressStage = async (stageId: StageId) => {
     const mapJson = MAP_BY_STAGE[stageId];
     if (!mapJson) {
       return;
     }
 
-    selectStage(stageId);
-    restartGame(mapJson);
-    navigation.replace("Game");
+    await showLoadingWhile(async () => {
+      selectStage(stageId);
+      restartGame(mapJson);
+      navigation.replace("Game");
+    });
   };
 
   const handlePressLocked = () => {
