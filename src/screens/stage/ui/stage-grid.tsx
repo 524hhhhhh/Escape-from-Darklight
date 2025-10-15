@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import StageCard from "./stage-card";
+import StageCard from "@/screens/stage/ui/stage-card";
 import { isStageLocked } from "@/lib/stage-progress";
 import type { ChapterId, StageId, StageMeta } from "@/constants/stage-meta";
 

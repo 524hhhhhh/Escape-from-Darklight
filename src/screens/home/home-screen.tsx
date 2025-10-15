@@ -1,13 +1,12 @@
 import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { RootStackParamList } from "App";
 import { Pressable, StyleSheet, View } from "react-native";
 import AppText from "@/components/text/app-text";
+import type { AppRoutes } from "@/types/navigation";
 
 export default function HomeScreen() {
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
 
   return (
     <Pressable

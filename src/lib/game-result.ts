@@ -1,7 +1,7 @@
-import { GAME_RESULT_MESSAGE } from "@/constants/game";
+import { GAME_RESULT_MESSAGE } from "@/constants/game-message";
 import { GameStatus } from "@/types/game-state";
 
-export function gameResult(status: GameStatus) {
+export function getGameResult(status: GameStatus) {
   if (status.type === "cleared") {
     const { TITLE, SUB_TITLE } = GAME_RESULT_MESSAGE.CLEARED;
 
