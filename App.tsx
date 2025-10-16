@@ -10,6 +10,8 @@ import LoadingScreen from "@/screens/loading/loading-screen";
 import * as SplashScreen from "expo-splash-screen";
 import { View, StyleSheet } from "react-native";
 import type { AppRoutes } from "@/types/navigation";
+import { Asset } from "expo-asset";
+import { BG_ASSETS } from "@/constants/background-assets";
 
 const AppStack = createNativeStackNavigator<AppRoutes>();
 SplashScreen.preventAutoHideAsync();
@@ -20,9 +22,14 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (fontLoaded || error) {
-      SplashScreen.hideAsync();
+    if (!fontLoaded && !error) {
+      return;
     }
+
+    (async () => {
+      await Asset.loadAsync([BG_ASSETS.LOADING]);
+      await SplashScreen.hideAsync();
+    })();
   }, [fontLoaded, error]);
 
   if (!fontLoaded && !error) {
