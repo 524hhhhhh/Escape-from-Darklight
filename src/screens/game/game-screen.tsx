@@ -58,7 +58,7 @@ export default function GameScreen() {
   const isLastStage = !nextStageId;
 
   const handleRetry = async () => {
-    await showLoadingWhile(async () => {
+    await showLoadingWhile(() => {
       restartGame();
     });
   };
@@ -68,7 +68,7 @@ export default function GameScreen() {
       return;
     }
 
-    await showLoadingWhile(async () => {
+    await showLoadingWhile(() => {
       selectStage(nextStageId);
       const nextMap = MAP_BY_STAGE[nextStageId];
       restartGame(nextMap);
@@ -92,7 +92,7 @@ export default function GameScreen() {
         secondaryAction={{
           title: "스테이지 목록으로 이동",
           onPress: async () => {
-            await showLoadingWhile(async () => {
+            await showLoadingWhile(() => {
               resetGame();
               navigation.replace("StageDetail");
             });

@@ -50,7 +50,7 @@ export default function StageDetailScreen() {
       return;
     }
 
-    await showLoadingWhile(async () => {
+    await showLoadingWhile(() => {
       selectStage(stageId);
       restartGame(mapJson);
       navigation.replace("Game");
