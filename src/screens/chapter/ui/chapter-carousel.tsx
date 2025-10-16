@@ -1,6 +1,6 @@
 import { View, FlatList, StyleSheet, useWindowDimensions } from "react-native";
 import { CHAPTER_THUMBNAILS, ChapterId } from "@/constants/stage-meta";
-import ChapterCard from "./chapter-card";
+import ChapterCard from "@/screens/chapter/ui/chapter-card";
 import { useChapterStore } from "@/store/use-chapter-store";
 
 const Separator = () => <View style={styles.separator} />;

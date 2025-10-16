@@ -3,20 +3,19 @@ import { View, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Haptics from "expo-haptics";
-import { RootStackParamList } from "App";
 import AppText from "@/components/text/app-text";
-import ChapterCarousel from "@/screens/chapter/chapter-carousel";
+import ChapterCarousel from "@/screens/chapter/ui/chapter-carousel";
 import { COLORS } from "@/constants/theme";
 import { useChapterStore } from "@/store/use-chapter-store";
 import IconButton from "@/components/buttons/icon-button";
 import { ChapterId } from "@/constants/stage-meta";
 import AppToast from "@/components/toast/app-toast";
+import type { AppRoutes } from "@/types/navigation";
 
 export default function ChapterScreen() {
   const [isToastVisible, setIsToastVisible] = useState(false);
 
-  const navigation =
-    useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
 
   const selectChapter = useChapterStore((state) => state.selectChapter);
   const unlockedChapters = useChapterStore((state) => state.unlockedChapters);

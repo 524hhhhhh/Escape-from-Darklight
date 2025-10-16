@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, LayoutChangeEvent } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { WorldEngineLayer } from "@/game/ui/world-layer/world-engine-layer";
@@ -11,10 +11,11 @@ import { LightingWorldState } from "@/types/light";
 import { WorldRenderLayer } from "@/game/ui/world-layer/world-render-layer";
 import StatusHud from "@/game/ui/hud/status-hud";
 import { systems } from "@/game/systems";
+import { COLORS } from "@/constants/theme";
 
 type Props = { isRunning?: boolean; canControl?: boolean };
 
-export default function GameCanvas({
+export default function GameScene({
   isRunning = false,
   canControl = true,
 }: Props) {
@@ -27,13 +28,10 @@ export default function GameCanvas({
   );
 
   const worldRef = useRef<LightingWorldState | null>(null);
+  const [isWorldReady, setIsWorldReady] = useState(false);
 
   useEffect(() => {
-    if (currentMap) {
-      worldRef.current = createWorldState({ mapJson: currentMap });
-    } else {
-      worldRef.current = null;
-    }
+    setIsWorldReady(false);
   }, [currentMap]);
 
   useEffect(() => {
@@ -59,63 +57,82 @@ export default function GameCanvas({
     return () => stopHapticLoop();
   }, [isRunning]);
 
-  if (currentMap && !worldRef.current) {
-    worldRef.current = createWorldState({ mapJson: currentMap });
-  }
-
-  if (!currentMap || !worldRef.current) {
-    return <View />;
-  }
-
-  const handleLayout = (e: LayoutChangeEvent) => {
+  const setupWorldViewport = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
-    if (!worldRef.current) {
+
+    if (!width || !height || !currentMap) {
       return;
+    }
+
+    if (!worldRef.current) {
+      worldRef.current = createWorldState({ mapJson: currentMap });
     }
 
     const view = worldRef.current.view;
     view.width = width;
     view.height = height;
+
+    setIsWorldReady(true);
   };
 
   return (
-    <View style={styles.root}>
-      <WorldEngineLayer
-        isRunning={isRunning}
-        style={styles.canvas}
-        world={worldRef.current}
-        systems={systems}
-        onLayout={handleLayout}
-        renderOverlay={(world) => <WorldRenderLayer world={world} />}
-      />
-
-      <StatusHud />
-
-      <View style={styles.hud}>
-        {canControl && (
-          <Joystick
-            onChange={(value) => {
-              const world = worldRef.current;
-              if (!world) {
-                return;
-              }
-
-              world.input.x = value.x;
-              world.input.y = value.y;
-              world.input.power = value.strength;
-            }}
-            style={[styles.joystick, joyStyle]}
+    <View
+      style={styles.root}
+      renderToHardwareTextureAndroid
+      needsOffscreenAlphaCompositing
+      onLayout={setupWorldViewport}
+    >
+      {isWorldReady && worldRef.current ? (
+        <>
+          <WorldEngineLayer
+            isRunning={isRunning}
+            style={styles.worldLayer}
+            world={worldRef.current}
+            systems={systems}
+            renderOverlay={(world) => <WorldRenderLayer world={world} />}
           />
-        )}
-      </View>
+
+          <StatusHud />
+
+          <View style={styles.overlay}>
+            {canControl && (
+              <Joystick
+                onChange={(value) => {
+                  const world = worldRef.current;
+                  if (!world) {
+                    return;
+                  }
+
+                  world.input.x = value.x;
+                  world.input.y = value.y;
+                  world.input.power = value.strength;
+                }}
+                style={[styles.joystick, joyStyle]}
+              />
+            )}
+          </View>
+        </>
+      ) : (
+        <View style={styles.blank} />
+      )}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  root: { flex: 1, width: "100%", height: "100%", position: "relative" },
-  canvas: { flex: 1, position: "relative" },
-  hud: {
+  root: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    position: "relative",
+    backgroundColor: COLORS.BACKGROUND.GAME,
+  },
+  blank: {
+    flex: 1,
+    backgroundColor: COLORS.BACKGROUND.GAME,
+  },
+  worldLayer: { flex: 1, position: "relative" },
+  overlay: {
     ...StyleSheet.absoluteFillObject,
     pointerEvents: "box-none",
     zIndex: 20,

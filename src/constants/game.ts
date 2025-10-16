@@ -1,7 +1,0 @@
-const GAME_RESULT_MESSAGE = {
-  CLEARED: { TITLE: "GAME CLEAR", SUB_TITLE: "탈출 성공" },
-  TIMEOUT: { TITLE: "GAME OVER", SUB_TITLE: "시간 초과" },
-  DEATH: { TITLE: "GAME OVER", SUB_TITLE: "생명 소진" },
-};
-
-export { GAME_RESULT_MESSAGE };
