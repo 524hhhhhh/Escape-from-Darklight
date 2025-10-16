@@ -13,6 +13,7 @@ import { MAP_BY_STAGE, type StageId } from "@/constants/stage-meta";
 import { getNextStageId } from "@/lib/stage-progress";
 import { showLoadingWhile } from "@/lib/show-loading-while";
 import type { AppRoutes } from "@/types/navigation";
+import { useLoadingStore } from "@/store/use-loading-store";
 
 export default function GameScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
@@ -28,8 +29,11 @@ export default function GameScreen() {
   const markCleared = useStageStore((state) => state.markCleared);
   const selectStage = useStageStore((state) => state.selectStage);
 
+  const isLoading = useLoadingStore((state) => state.isVisible);
+
   const canControl = status.type === "playing";
-  const isRunning = status.type === "playing" || status.type === "death";
+  const isRunning =
+    (status.type === "playing" || status.type === "death") && !isLoading;
 
   const { visible, title, subTitle } = getGameResult(status);
 
