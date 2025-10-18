@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:mobile": "cd apps/mobile && expo start",
-    "dev:api": "cd apps/api && nodemon src/index.ts",
+    "dev:api": "cd apps/api && nodemon src/server.ts",
     "prepare": "husky"
   },
   "devDependencies": {
