@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "escape",
+    "slug": "escape",
+    "scheme": "escape",
+    "version": "1.0.0",
+    "orientation": "landscape",
+    "icon": "@assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "@assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.yourname.escape"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "@assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "package": "com.yourname.escape"
+    },
+    "web": {
+      "favicon": "@assets/favicon.png"
+    },
+    "plugins": ["expo-font"]
+  }
+}
