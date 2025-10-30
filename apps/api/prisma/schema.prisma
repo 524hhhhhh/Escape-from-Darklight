@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId     String          @id @default(cuid()) @map("user_id")
+  clientId   String          @unique @map("client_id")
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  progresses StageProgress[]
+
+  @@map("users")
+}
+
+model Stage {
+  stageId    String          @id @map("stage_id")
+  title      String
+  chapter    String?
+  order      Int?
+  createdAt  DateTime        @default(now()) @map("created_at")
+  updatedAt  DateTime        @updatedAt @map("updated_at")
+
+  progresses StageProgress[]
+
+  @@map("stages")
+}
+
+model StageProgress {
+  progressId String   @id @default(cuid()) @map("progress_id")
+  userId     String   @map("user_id")
+  stageId    String   @map("stage_id")
+  cleared    Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  user  User  @relation(fields: [userId], references: [userId])
+  stage Stage @relation(fields: [stageId], references: [stageId])
+
+  @@unique([userId, stageId])
+  @@map("stage_progress")
+}
