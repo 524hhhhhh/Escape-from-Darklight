@@ -12,6 +12,8 @@ import { View, StyleSheet } from "react-native";
 import type { AppRoutes } from "@/types/navigation";
 import { Asset } from "expo-asset";
 import { BG_ASSETS, FONTS } from "@/constants/assets/boot";
+import { loadGameProgress } from "@/lib/progress";
+import { useStageStore } from "@/store/use-stage-store";
 
 const AppStack = createNativeStackNavigator<AppRoutes>();
 SplashScreen.preventAutoHideAsync();
@@ -27,8 +29,14 @@ export default function App() {
     }
 
     (async () => {
-      await Asset.loadAsync([BG_ASSETS.LOADING]);
-      await SplashScreen.hideAsync();
+      try {
+        await Asset.loadAsync([BG_ASSETS.LOADING]);
+        const { savedStageIds } = await loadGameProgress();
+
+        useStageStore.setState({ clearedStageIds: new Set(savedStageIds) });
+      } finally {
+        await SplashScreen.hideAsync();
+      }
     })();
   }, [fontLoaded, error]);
 
