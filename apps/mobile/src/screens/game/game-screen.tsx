@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { View, StyleSheet } from "react-native";
 import { useGameStore } from "@/store/use-game-store";
 import { useChapterStore } from "@/store/use-chapter-store";
@@ -26,7 +25,6 @@ export default function GameScreen() {
   const selectedChapterId = useChapterStore((state) => state.selectedChapterId);
 
   const selectedStageId = useStageStore((state) => state.selectedStageId);
-  const markCleared = useStageStore((state) => state.markCleared);
   const selectStage = useStageStore((state) => state.selectStage);
 
   const isLoading = useLoadingStore((state) => state.isVisible);
@@ -36,19 +34,6 @@ export default function GameScreen() {
     (status.type === "playing" || status.type === "death") && !isLoading;
 
   const { visible, title, subTitle } = getGameResult(status);
-
-  const hasMarkedClearRef = useRef(false);
-
-  useEffect(() => {
-    if (status.type === "cleared") {
-      if (!hasMarkedClearRef.current && selectedStageId) {
-        markCleared(selectedStageId);
-        hasMarkedClearRef.current = true;
-      }
-    } else {
-      hasMarkedClearRef.current = false;
-    }
-  }, [status.type, selectedStageId, markCleared]);
 
   const nextStageId: StageId | null =
     selectedChapterId && selectedStageId
