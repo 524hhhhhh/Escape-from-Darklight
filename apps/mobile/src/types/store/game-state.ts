@@ -23,7 +23,7 @@ type GameState = {
 
   restartGame: (mapJson?: MapJson) => void;
   resetGame: () => void;
-  clearGame: () => void;
+  completeStage: () => void;
   gameOver: (reason: GameOverReason) => void;
   tick: () => void;
 };

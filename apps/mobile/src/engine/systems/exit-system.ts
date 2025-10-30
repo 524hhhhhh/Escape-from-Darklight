@@ -10,14 +10,14 @@ export const ExitSystem: WorldSystem = (world) => {
     return;
   }
 
-  const { status, clearGame } = useGameStore.getState();
+  const { status, completeStage } = useGameStore.getState();
   if (status.type !== "playing") {
     return;
   }
 
   const { worldX, worldY } = player.position;
   if (isExitAtWorld(map, worldX, worldY)) {
-    clearGame();
+    completeStage();
     return;
   }
 };

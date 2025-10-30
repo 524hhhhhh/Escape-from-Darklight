@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { GameState, GameOverReason } from "@/types/store/game-state";
 import { DEFAULT_LIMIT } from "@/constants/time";
 import { PLAYER } from "@/constants/player";
+import { useStageStore } from "@/store/use-stage-store";
 
 export const useGameStore = create<GameState>((set, get) => ({
   runId: 0,
@@ -46,10 +47,19 @@ export const useGameStore = create<GameState>((set, get) => ({
       currentMapJson: undefined,
     })),
 
-  clearGame: () =>
-    set(() => ({
-      status: { type: "cleared" },
-    })),
+  completeStage: () => {
+    const { status } = get();
+    if (status.type === "cleared") {
+      return;
+    }
+
+    set({ status: { type: "cleared" } });
+
+    const { selectedStageId, updateClearedStage } = useStageStore.getState();
+    if (selectedStageId) {
+      updateClearedStage(selectedStageId);
+    }
+  },
 
   gameOver: (reason: GameOverReason) =>
     set(() => ({
