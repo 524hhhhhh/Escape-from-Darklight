@@ -24,7 +24,6 @@ export default function StageDetailScreen() {
   const restartGame = useGameStore((state) => state.restartGame);
 
   const selectedChapterId = useChapterStore((state) => state.selectedChapterId);
-  const clearedStages = useStageStore((state) => state.clearedStages);
 
   const selectStage = useStageStore((state) => state.selectStage);
 
@@ -82,7 +81,6 @@ export default function StageDetailScreen() {
         <StageGrid
           chapterId={selectedChapterId}
           stages={chapterStages}
-          clearedStages={clearedStages}
           onSelectStage={handlePressStage}
           onLockedPress={handlePressLocked}
         />

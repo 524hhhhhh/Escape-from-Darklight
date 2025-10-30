@@ -5,13 +5,16 @@ import {
   type StageMeta,
 } from "@/constants/stage-meta";
 
+const FIRST_STAGE_INDEX = 0;
+const STAGE_NOT_FOUND = -1;
+
 function getStageList(chapterId: ChapterId): readonly StageMeta[] {
   return STAGES_BY_CHAPTER[chapterId] ?? [];
 }
 
 function getStageIndex(chapterId: ChapterId, stageId: StageId | null): number {
   if (!stageId) {
-    return -1;
+    return STAGE_NOT_FOUND;
   }
   const chapterList = getStageList(chapterId);
 
@@ -36,21 +39,21 @@ function getNextStageId(
 function isStageLocked(
   chapterId: ChapterId,
   stageId: StageId,
-  clearedMap: Record<string, boolean>,
+  clearedSet: ReadonlySet<StageId>,
 ): boolean {
   const stages = getStageList(chapterId);
-  const index = stages.findIndex((stage) => stage.id === stageId);
+  const index = getStageIndex(chapterId, stageId);
 
-  if (index <= 0) {
+  if (index === STAGE_NOT_FOUND) {
+    return true;
+  }
+
+  if (index === FIRST_STAGE_INDEX) {
     return false;
   }
 
-  const prevStage = stages[index - 1];
-  const prevCleared = clearedMap[prevStage.id] === true;
-
-  const isLocked = !prevCleared;
-
-  return isLocked;
+  const prevStageId = stages[index - 1].id;
+  return !clearedSet.has(prevStageId);
 }
 
 export { getNextStageId, isStageLocked };

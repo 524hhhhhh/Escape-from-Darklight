@@ -2,11 +2,11 @@ import { View, StyleSheet } from "react-native";
 import StageCard from "@/screens/stage/ui/stage-card";
 import { isStageLocked } from "@/lib/stage-progress";
 import type { ChapterId, StageId, StageMeta } from "@/constants/stage-meta";
+import { useStageStore } from "@/store/use-stage-store";
 
 type Props = {
   chapterId: ChapterId;
   stages: readonly StageMeta[];
-  clearedStages: Record<string, boolean>;
   onSelectStage: (id: StageId) => void;
   onLockedPress?: () => void;
 };
@@ -14,15 +14,16 @@ type Props = {
 export default function StageGrid({
   chapterId,
   stages,
-  clearedStages,
   onSelectStage,
   onLockedPress,
 }: Props) {
+  const clearedStageIds = useStageStore((state) => state.clearedStageIds);
+
   return (
     <View style={styles.grid}>
       {stages.map((stage) => {
-        const isLocked = isStageLocked(chapterId, stage.id, clearedStages);
-        const isCleared = !!clearedStages[stage.id];
+        const isLocked = isStageLocked(chapterId, stage.id, clearedStageIds);
+        const isCleared = clearedStageIds.has(stage.id);
 
         return (
           <StageCard
