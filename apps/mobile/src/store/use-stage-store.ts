@@ -1,13 +1,24 @@
 import { create } from "zustand";
 import type { StageState } from "@/types/store/stage-state";
+import { saveClearedStage } from "@/lib/progress";
 
-export const useStageStore = create<StageState>((set) => ({
+export const useStageStore = create<StageState>((set, get) => ({
   selectedStageId: null,
-  clearedStages: {},
+  clearedStageIds: new Set(),
 
   selectStage: (id) => set({ selectedStageId: id }),
-  markCleared: (id) =>
-    set((state) => ({
-      clearedStages: { ...state.clearedStages, [id]: true },
-    })),
+
+  updateClearedStage: (id) => {
+    const clearedStageSet = get().clearedStageIds;
+    if (clearedStageSet.has(id)) {
+      return;
+    }
+
+    const updatedStageSet = new Set(clearedStageSet);
+    updatedStageSet.add(id);
+
+    set({ clearedStageIds: updatedStageSet });
+
+    saveClearedStage(id);
+  },
 }));

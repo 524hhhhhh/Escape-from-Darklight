@@ -2,9 +2,9 @@ import type { StageId } from "@/constants/stage-meta";
 
 type StageState = {
   selectedStageId: StageId | null;
-  clearedStages: Partial<Record<StageId, boolean>>;
+  clearedStageIds: Set<StageId>;
   selectStage: (id: StageId | null) => void;
-  markCleared: (id: StageId) => void;
+  updateClearedStage: (id: StageId) => void;
 };
 
 export type { StageState };
