@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "express": "^5.1.0",
+    "zod": "^4.1.12",
     "dotenv": "^17.2.2",
     "@prisma/client": "^6.16.2"
   },
