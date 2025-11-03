@@ -18,11 +18,21 @@
         "image": "./src/assets/app/splash.png",
         "resizeMode": "cover"
       },
-      "bundleIdentifier": "com.johyeju.escape"
+      "bundleIdentifier": "com.johyeju.escape",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "web": {
       "favicon": "./src/assets/app/icon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "a511f9bd-427b-4de6-bb70-272db71ce4f7"
+      }
+    }
   }
 }
