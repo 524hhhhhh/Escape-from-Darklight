@@ -1,9 +1,9 @@
-import { COLORS } from "@/constants/theme";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { Pressable, StyleSheet, View } from "react-native";
+import { ImageBackground, Pressable, StyleSheet } from "react-native";
 import AppText from "@/components/text/app-text";
 import type { AppRoutes } from "@/types/navigation";
+import { BG_ASSETS } from "@/constants/assets/boot";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
@@ -13,15 +13,21 @@ export default function HomeScreen() {
       style={styles.root}
       onPress={() => navigation.replace("Chapter")}
     >
-      <View style={styles.logoBox}>
-        <AppText variant="TITLE_XL" style={styles.logoText}>
-          로고
-        </AppText>
-      </View>
+      <ImageBackground
+        source={BG_ASSETS.HOME}
+        style={styles.background}
+        resizeMode="cover"
+      >
+        <ImageBackground
+          source={BG_ASSETS.LOGO}
+          style={styles.logo}
+          resizeMode="contain"
+        />
 
-      <AppText variant="TITLE_M" style={styles.guide}>
-        시작하려면 누르세요
-      </AppText>
+        <AppText variant="TITLE_M" style={styles.guide}>
+          시작하려면 누르세요
+        </AppText>
+      </ImageBackground>
     </Pressable>
   );
 }
@@ -29,21 +35,16 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    backgroundColor: COLORS.BACKGROUND.HOME,
-    alignItems: "center",
-    justifyContent: "flex-start",
-    paddingTop: 30,
   },
-  logoBox: {
-    width: "50%",
-    height: 170,
-    backgroundColor: "#E5E7EB",
-    borderRadius: 8,
+  background: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  logoText: {
-    color: "#111827",
+  logo: {
+    width: "100%",
+    height: 300,
+    marginBottom: 120,
   },
   guide: {
     position: "absolute",

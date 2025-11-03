@@ -1,5 +1,7 @@
 const BG_ASSETS = {
   LOADING: require("@assets/background/loading.png"),
+  HOME: require("@assets/background/home.png"),
+  LOGO: require("@assets/background/logo.png"),
 };
 
 const FONTS = {
