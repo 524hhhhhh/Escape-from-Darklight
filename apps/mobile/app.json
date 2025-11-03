@@ -5,30 +5,34 @@
     "scheme": "escape",
     "version": "1.0.0",
     "orientation": "landscape",
-    "icon": "./src/assets/icon.png",
+    "icon": "./src/assets/app/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
-      "image": "./src/assets/splash-icon.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "image": "./src/assets/app/splash.png",
+      "resizeMode": "contain"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.johyeju.escape"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "supportsTablet": false,
+      "splash": {
+        "image": "./src/assets/app/splash.png",
+        "resizeMode": "cover"
       },
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "package": "com.johyeju.escape"
+      "bundleIdentifier": "com.johyeju.escape",
+      "infoPlist": {
+        "UIHomeIndicatorAutoHidden": true,
+        "UIStatusBarHidden": true,
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "web": {
-      "favicon": "./src/assets/favicon.png"
+      "favicon": "./src/assets/app/icon.png"
     },
-    "plugins": ["expo-font"]
+    "plugins": ["expo-font"],
+    "extra": {
+      "eas": {
+        "projectId": "a511f9bd-427b-4de6-bb70-272db71ce4f7"
+      }
+    }
   }
 }
