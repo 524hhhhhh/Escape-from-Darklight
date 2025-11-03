@@ -4,7 +4,9 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "ios": "expo run:ios"
+    "ios": "expo run:ios",
+    "build:ios:dev": "eas build -p ios --profile development",
+    "submit:ios": "eas submit -p ios --latest"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
@@ -29,5 +31,6 @@
   "devDependencies": {
     "@types/react": "~19.1.0",
     "babel-preset-expo": "^54.0.2"
-  }
+  },
+  "version": "1.0.0"
 }
