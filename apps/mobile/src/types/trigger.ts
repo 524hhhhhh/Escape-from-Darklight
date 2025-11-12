@@ -12,6 +12,7 @@ type SwitchState = TriggerBase & {
   progressMs: number;
   isCompleted: boolean;
   sprite: FrameSprite;
+  isHolding: boolean;
 };
 
 type DoorState = TriggerBase & {
