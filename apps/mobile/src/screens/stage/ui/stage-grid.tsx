@@ -3,6 +3,7 @@ import StageCard from "@/screens/stage/ui/stage-card";
 import { isStageLocked } from "@/lib/stage-progress";
 import type { ChapterId, StageId, StageMeta } from "@/constants/stage-meta";
 import { useStageStore } from "@/store/use-stage-store";
+import { playGameStartSound } from "@/engine/sound/global-sound";
 
 type Props = {
   chapterId: ChapterId;
@@ -31,9 +32,14 @@ export default function StageGrid({
             title={stage.title}
             isCleared={isCleared}
             isLocked={isLocked}
-            onSelect={() =>
-              isLocked ? onLockedPress?.() : onSelectStage(stage.id)
-            }
+            onSelect={() => {
+              playGameStartSound();
+              if (isLocked) {
+                onLockedPress?.();
+              } else {
+                onSelectStage(stage.id);
+              }
+            }}
           />
         );
       })}

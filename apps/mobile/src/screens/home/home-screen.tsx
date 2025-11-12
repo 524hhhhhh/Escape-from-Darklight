@@ -4,6 +4,7 @@ import { ImageBackground, Pressable, StyleSheet } from "react-native";
 import AppText from "@/components/text/app-text";
 import type { AppRoutes } from "@/types/navigation";
 import { BG_ASSETS } from "@/constants/assets/boot";
+import { playPressSound } from "@/engine/sound/global-sound";
 
 export default function HomeScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
@@ -11,6 +12,7 @@ export default function HomeScreen() {
   return (
     <Pressable
       style={styles.root}
+      onPressIn={playPressSound}
       onPress={() => navigation.replace("Chapter")}
     >
       <ImageBackground
