@@ -1,9 +1,11 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import { tileCenterToWorld, worldToScreen } from "@/utils/coordinate";
 import TriggerSprite from "@/engine/ui/sprite/trigger-sprite";
 import type { Viewport } from "@/types/world-state";
 import type { DoorState } from "@/types/trigger";
 import { TransformMap } from "@/types/map-transform";
+import { useAudioPlayer } from "expo-audio";
+import { GAME_EFFECT_ASSETS } from "@/constants/assets/sound";
 
 type Props = {
   door: DoorState;
@@ -12,6 +14,8 @@ type Props = {
 };
 
 export function DoorItem({ door, map, view }: Props) {
+  const [hasPlayedDoorSound, setHasPlayedDoorSound] = useState(false);
+
   const { centerX, centerY } = tileCenterToWorld(
     door.tileX,
     door.tileY,
@@ -23,6 +27,21 @@ export function DoorItem({ door, map, view }: Props) {
     view,
     map.tileSize,
   );
+  const doorSound = useAudioPlayer(GAME_EFFECT_ASSETS.DOOR);
+
+  useEffect(() => {
+    doorSound.loop = false;
+  }, [doorSound]);
+
+  useEffect(() => {
+    if (door.openState === "opening" && !hasPlayedDoorSound) {
+      doorSound.seekTo(0);
+      doorSound.play();
+      setHasPlayedDoorSound(true);
+    } else if (door.openState !== "opening" && hasPlayedDoorSound) {
+      setHasPlayedDoorSound(false);
+    }
+  }, [door.openState, hasPlayedDoorSound, doorSound]);
 
   return (
     <TriggerSprite
