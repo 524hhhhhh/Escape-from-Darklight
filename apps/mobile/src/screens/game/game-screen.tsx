@@ -13,6 +13,9 @@ import { getNextStageId } from "@/lib/stage-progress";
 import { showLoadingWhile } from "@/lib/show-loading-while";
 import type { AppRoutes } from "@/types/navigation";
 import { useLoadingStore } from "@/store/use-loading-store";
+import { useAudioPlayer } from "expo-audio";
+import { GAME_EFFECT_ASSETS } from "@/constants/assets/sound";
+import { useEffect } from "react";
 
 export default function GameScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<AppRoutes>>();
@@ -33,7 +36,7 @@ export default function GameScreen() {
   const isRunning =
     (status.type === "playing" || status.type === "death") && !isLoading;
 
-  const { visible, title, subTitle } = getGameResult(status);
+  const { isVisible, title, subTitle } = getGameResult(status);
 
   const nextStageId: StageId | null =
     selectedChapterId && selectedStageId
@@ -65,12 +68,34 @@ export default function GameScreen() {
       ? { title: "다시하기", onPress: handleRetry }
       : { title: "다음으로 이동", onPress: handleNextStage };
 
+  const gameOverSound = useAudioPlayer(GAME_EFFECT_ASSETS.GAME_OVER);
+  const gameClearSound = useAudioPlayer(GAME_EFFECT_ASSETS.CLEARED);
+  const statusType = status.type;
+
+  useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+
+    const effects =
+      statusType === "cleared"
+        ? gameClearSound
+        : statusType === "death" || statusType === "gameover"
+          ? gameOverSound
+          : null;
+
+    if (effects) {
+      effects.seekTo(0);
+      effects.play();
+    }
+  }, [isVisible, statusType, gameClearSound, gameOverSound]);
+
   return (
     <View style={styles.root}>
       <GameScene key={runId} isRunning={isRunning} canControl={canControl} />
 
       <AppModal
-        visible={visible}
+        visible={isVisible}
         title={title}
         subTitle={subTitle}
         primaryAction={handleAction}
