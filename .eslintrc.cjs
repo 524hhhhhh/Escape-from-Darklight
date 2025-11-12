@@ -7,4 +7,13 @@ module.exports = {
   ],
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
+
+  overrides: [
+    {
+      files: ["apps/mobile/src/constants/**/**/*.ts"],
+      rules: {
+        "@typescript-eslint/no-require-imports": "off",
+      },
+    },
+  ],
 };

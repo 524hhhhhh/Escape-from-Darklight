@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "escape",
+    "name": "Escape from Darklight",
     "slug": "escape",
     "scheme": "escape",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "orientation": "landscape",
     "icon": "./src/assets/app/icon.png",
     "userInterfaceStyle": "light",
@@ -13,6 +13,7 @@
       "resizeMode": "contain"
     },
     "ios": {
+      "buildNumber": "2",
       "supportsTablet": false,
       "splash": {
         "image": "./src/assets/app/splash.png",
@@ -28,7 +29,7 @@
     "web": {
       "favicon": "./src/assets/app/icon.png"
     },
-    "plugins": ["expo-font"],
+    "plugins": ["expo-font", "expo-audio"],
     "extra": {
       "eas": {
         "projectId": "a511f9bd-427b-4de6-bb70-272db71ce4f7"

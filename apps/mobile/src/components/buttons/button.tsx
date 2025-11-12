@@ -1,6 +1,7 @@
 import { COLORS, FONTS } from "@/constants/theme";
 import { Pressable, StyleSheet, ViewStyle } from "react-native";
 import AppText from "@/components/text/app-text";
+import { playPressSound } from "@/engine/sound/global-sound";
 
 type Variant = keyof typeof FONTS;
 
@@ -17,6 +18,11 @@ export default function Button({
   style,
   variant,
 }: ButtonProps) {
+  const handlePress = () => {
+    playPressSound();
+    onPress();
+  };
+
   return (
     <Pressable
       style={({ pressed }) => [
@@ -24,7 +30,7 @@ export default function Button({
         pressed && { opacity: 0.8 },
         style,
       ]}
-      onPress={onPress}
+      onPress={handlePress}
     >
       <AppText variant={variant}>{title}</AppText>
     </Pressable>

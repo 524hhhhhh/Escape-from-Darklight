@@ -30,11 +30,15 @@ export const TriggerSystem: WorldSystem = (world, frameInfo) => {
     const isOnSwitchTile = swt.tileX === tileX && swt.tileY === tileY;
     const holdMs = TRIGGER_TEMPLATES.switch.HOLD_MS;
 
-    if (isOnSwitchTile && !swt.isCompleted) {
+    swt.isHolding = isOnSwitchTile && !swt.isCompleted;
+
+    if (swt.isHolding) {
       swt.progressMs += dt * 1000;
 
       if (swt.progressMs >= holdMs) {
+        swt.progressMs = holdMs;
         swt.isCompleted = true;
+        swt.isHolding = false;
 
         swt.linkedDoors.forEach((doorId) => {
           const door = triggers.doors.get(doorId);
@@ -47,7 +51,7 @@ export const TriggerSystem: WorldSystem = (world, frameInfo) => {
           }
         });
       }
-    } else if (!isOnSwitchTile && !swt.isCompleted && swt.progressMs !== 0) {
+    } else if (!swt.isCompleted && swt.progressMs !== 0) {
       swt.progressMs = 0;
     }
 

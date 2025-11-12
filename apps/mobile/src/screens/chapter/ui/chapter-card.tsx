@@ -1,6 +1,7 @@
 import { View, Image, StyleSheet, Pressable } from "react-native";
 import AppText from "@/components/text/app-text";
 import { ChapterId, ChapterThumbnail } from "@/constants/stage-meta";
+import { playPressSound } from "@/engine/sound/global-sound";
 
 export default function ChapterCard({
   item,
@@ -17,6 +18,7 @@ export default function ChapterCard({
 }) {
   return (
     <Pressable
+      onPressIn={playPressSound}
       onPress={() => onPress(item.id)}
       style={({ pressed }) => [
         styles.card,

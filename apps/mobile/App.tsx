@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "@/screens/home/home-screen";
@@ -14,14 +14,17 @@ import { Asset } from "expo-asset";
 import { BG_ASSETS, FONTS } from "@/constants/assets/boot";
 import { loadGameProgress } from "@/lib/progress";
 import { useStageStore } from "@/store/use-stage-store";
+import { useLoadingStore } from "@/store/use-loading-store";
+import { GlobalSound } from "@/engine/sound/global-sound";
 
 const AppStack = createNativeStackNavigator<AppRoutes>();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  const [fontLoaded, error] = useFonts({
-    Galmuri9: FONTS.DEFAULT,
-  });
+  const [fontLoaded, error] = useFonts({ Galmuri9: FONTS.DEFAULT });
+  const [isBootCompleted, setIsBootCompleted] = useState(false);
+  const [currentRoute, setCurrentRoute] = useState<string>("Home");
+  const isLoading = useLoadingStore((state) => state.isVisible);
 
   useEffect(() => {
     if (!fontLoaded && !error) {
@@ -36,6 +39,7 @@ export default function App() {
         useStageStore.setState({ clearedStageIds: new Set(savedStageIds) });
       } finally {
         await SplashScreen.hideAsync();
+        setIsBootCompleted(true);
       }
     })();
   }, [fontLoaded, error]);
@@ -46,10 +50,19 @@ export default function App() {
 
   return (
     <View style={styles.root}>
-      <NavigationContainer>
+      <NavigationContainer
+        onStateChange={(state) => {
+          const route = state?.routes[state.index ?? 0]?.name;
+          if (route) setCurrentRoute(route);
+        }}
+      >
         <AppStack.Navigator
           initialRouteName="Home"
-          screenOptions={{ headerShown: false, animation: "none" }}
+          screenOptions={{
+            headerShown: false,
+            animation: "none",
+            autoHideHomeIndicator: true,
+          }}
         >
           <AppStack.Screen name="Home" component={HomeScreen} />
           <AppStack.Screen name="Chapter" component={ChapterScreen} />
@@ -57,6 +70,12 @@ export default function App() {
           <AppStack.Screen name="Game" component={GameScreen} />
         </AppStack.Navigator>
       </NavigationContainer>
+
+      <GlobalSound
+        isBootCompleted={isBootCompleted}
+        isLoading={isLoading}
+        currentRoute={currentRoute}
+      />
 
       <LoadingScreen />
     </View>

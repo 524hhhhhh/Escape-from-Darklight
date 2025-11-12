@@ -1,7 +1,7 @@
 import { COLORS } from "@/constants/theme";
-import React from "react";
 import { Pressable, StyleSheet, ViewStyle } from "react-native";
 import AppText from "@/components/text/app-text";
+import { playPressSound } from "@/engine/sound/global-sound";
 
 type IconButtonProps = {
   onPress: () => void;
@@ -25,6 +25,7 @@ export default function IconButton({
 
   return (
     <Pressable
+      onPressIn={playPressSound}
       onPress={onPress}
       hitSlop={8}
       style={({ pressed }) => [
