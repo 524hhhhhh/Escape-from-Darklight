@@ -4,6 +4,8 @@ import HeartSprite from "../sprite/heart-sprite";
 import { HEART } from "@/constants/heart-hp";
 import { updateHeartStates, buildHeartStates } from "@/lib/heart-hp-state";
 import type { HeartClipKey } from "@/types/heart-hp";
+import { useAudioPlayer } from "expo-audio";
+import { GAME_EFFECT_ASSETS } from "@/constants/assets/sound";
 
 type Props = {
   hp: number;
@@ -14,6 +16,7 @@ type Props = {
 
 export default function HeartBar({ hp, maxHp, x = 0, y = 0 }: Props) {
   const heartCount = Math.max(0, Math.ceil(maxHp / HEART.UNIT));
+  const hitSound = useAudioPlayer(GAME_EFFECT_ASSETS.HIT);
 
   const [hearts, setHearts] = useState<HeartClipKey[]>(() =>
     buildHeartStates(hp, heartCount),
@@ -25,6 +28,11 @@ export default function HeartBar({ hp, maxHp, x = 0, y = 0 }: Props) {
     const previousHp = storedHpRef.current;
     const nextHp = hp;
 
+    if (nextHp < previousHp && nextHp >= 0) {
+      hitSound.seekTo(0);
+      hitSound.play();
+    }
+
     setHearts((prevHearts) => {
       if (prevHearts.length !== heartCount) {
         return buildHeartStates(nextHp, heartCount);
@@ -33,7 +41,7 @@ export default function HeartBar({ hp, maxHp, x = 0, y = 0 }: Props) {
     });
 
     storedHpRef.current = nextHp;
-  }, [hp, heartCount]);
+  }, [hp, heartCount, hitSound]);
 
   const size = HEART.UI.SIZE;
   const step = HEART.UI.SIZE + HEART.UI.SPACING - HEART.UI.OVERLAP;

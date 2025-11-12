@@ -3,7 +3,7 @@ import { TILE_SIZE } from "./map";
 
 const PLAYER = {
   SPEED: 120,
-  MAX_HP: 20,
+  MAX_HP: 10,
   MIN_FACING_SPEED: 0.05,
   COLLIDER_W: Math.round(0.3 * TILE_SIZE.COLLISION),
   COLLIDER_H: Math.round(0.5 * TILE_SIZE.COLLISION),
